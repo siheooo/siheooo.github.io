@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>인터넷프로그래밍 3팀</title>
+	<link rel="stylesheet" href="style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+	<script src="pedestrian_route.js"></script>
+	<script src="markers.js"></script>
+	<script src="buttons.js"></script>
+	<script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx7b7144d6b822440c89d5008ebeb3fd17"></script>
+	<script
+		src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=7a59eac00d91c8ec4a4034f8afb2411f&libraries=clusterer,services"></script>
+</head>
+
+<body>
+	<div id="map"></div>
+	<!-- 현재위치 표시 버튼 -->
+	<div class="custom_control gps_btn radius_border">
+		<span onclick="current_location()"><img
+				src="assets/gps.png" alt="gps"></span>
+	</div>
+
+	<!-- 사이드 바 on 버튼 -->
+	<div class="custom_control sidebar_open_btn radius_border" onclick="openSidebar()">
+		<span>
+			<img src="assets/menu_open.png" alt="메뉴" 
+			onmouseover="this.src='assets/menu_close.png'"
+			onmouseout="this.src='assets/menu_open.png'">
+		</span>
+	</div>
+
+	<!-- 지도 확대 축소 버튼 -->
+	<div class="custom_control zoom_btn radius_border">
+		<span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png"
+				alt="확대"></span>
+		<span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png"
+				alt="축소"></span>
+	</div>
+
+	<!-- 사이렌 소리 버튼 -->
+	<div class="custom_control siren_btn radius_border">
+		<span onclick="siren()"><img src="https://cdn-icons-png.flaticon.com/512/763/763421.png" alt="사이렌"></span>
+		<audio id="siren" src="assets/siren.wav"></audio>
+	</div>
+
+    <!--전화-->
+    <div class="custom_control call_btn radius_border">
+		<span onclick="document.location.href='tel:112'"><img src="https://w7.pngwing.com/pngs/811/53/png-transparent-phone-contact-icon-logo-iphone-computer-icons-telephone-call-phone-icon-electronics-text-grass-thumbnail.png" alt="전화"></span>
+	</div>
+
+	<!--문자-->
+	<div class="custom_control sms_btn radius_border">
+		<span onclick="document.location.href='sms:010-0000-0000?body=안심귀가 서비스 비상문자입니다.'"><img src="https://d29fhpw069ctt2.cloudfront.net/icon/image/38198/preview.svg" alt="문자"></span>
+	</div>
+	
+	
+	<!-- 사이드 바 -->
+	<nav>
+		<div id="sidebar"> <a href="#" class="sidebar_close_btn" onclick="closeSidebar()">&times;</a>
+			<div class="contents">
+				<a href="#" class="menu" onclick="openSubSidebar_1()" >길 찾기</a>
+				<a href="#" class="menu" onclick="openSubSidebar_2()" >마커 선택</a>
+				<a href="#" class="menu"></a>
+				<a href="#" class="menu"></a>
+			</div>
+		</div>
+		<div id ="subSidebar_1" class ="subSidebar">
+			<div class="contents">
+				<a href="#" class="sidebar_close_btn" onclick="closeSidebar()">&times;</a>
+				<p>길찾기</p>
+				<form id="psform" method="post" class="pathsearch">
+					<!--출발지 입력-->
+					<div style="float: left; margin-bottom: 5px;">
+						<img src="https://cdn.discordapp.com/attachments/752108988719562776/912587994039455774/2.png">
+						<input type="text" id="strPoint" name="strPoint" placeholder="출발지">
+					</div>
+				
+					<!--도착지 입력-->
+					<div style="float: left">
+						<img src="https://cdn.discordapp.com/attachments/752108988719562776/912587994039455774/2.png">
+						<input type="text" id="arrPoint" name="arrPoint" placeholder="도착지">
+					</div>
+				
+					<!--길찾기 버튼-->
+					<div style="float: right">
+						<input type="image" id="str_arr_submit" name="str_arr_submit" class="searchbutton"
+							src="https://cdn.discordapp.com/attachments/752108988719562776/912546711619108874/searchbutton.png">
+						</input>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div id ="subSidebar_2" class ="subSidebar">
+			<div class="contents">
+				<a href="#" class="sidebar_close_btn" onclick="closeSidebar()">&times;</a>
+				<!-- 마커 표시 선택 메뉴 들어갈 부분 -->
+				<form>
+					<ul>
+						<li style="list-style:none"><input type="checkbox" onchange="checkBox(this)" name="CCTV" id="CCTV" value="CCTV" > CCTV</li>
+						<li style="list-style:none"><input type="checkbox" onchange="checkBox(this)" name="BELL" id="BELL" value="BELL"> 비상벨</li>
+						<li style="list-style:none"><input type="checkbox" onchange="checkBox(this)" name="POLICE" id="POLICE" value="POLICE"> 경찰서</li>
+						<li style="list-style:none"><input type="checkbox" onchange="checkBox(this)" name="FIRE" id="FIRE" value="FIRE"> 소방서</li>
+						<li style="list-style:none"><input type="checkbox" onchange="checkBox(this)" name="LAMP" id="LAMP" value="LAMP"> 가로등</li>
+						<li style="list-style:none"><input type="button" id="checkbtn" onclick="closeSidebar()" value="확인"></li>
+					</ul>
+                </form>
+			</div>
+		</div>
+		
+	</nav>
+	<div id="intro">
+		<div class="title">안심 길 찾기</div>
+	</div>
+
+	<script>
+
+		// 출발, 도착 좌표 카카오 맵 객체 생성
+		var start = new kakao.maps.LatLng(35.13367784973298, 129.1049204111099); // 대연 캠퍼스
+		var end = new kakao.maps.LatLng(35.11736284697083, 129.09162466048417); // 용당 캠퍼스
+
+		// 지도 표시
+		var mapContainer = document.getElementById("map"); // 지도를 표시할 div
+		var mapOption = {
+			center: new kakao.maps.LatLng(35.13367784973298, 129.1049204111099), // 지도의 중심좌표 - 부경대
+			level: 5, // 지도의 확대 레벨
+		};
+		var map = new kakao.maps.Map(mapContainer, mapOption);
+		var clusterer = new kakao.maps.MarkerClusterer({
+			map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
+			averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
+			minLevel: 7, // 클러스터 할 최소 지도 레벨
+		});
+
+		var current_location_marker; // 현재위치 마커
+
+		// 주소-좌표 변환 객체를 생성합니다
+		var geocoder = new kakao.maps.services.Geocoder();
+
+		pedestrian_route(start, end, map);
+		
+
+		// 인트로 에니메이션
+
+		setTimeout(function(){
+			var intro = document.getElementById("intro");
+			var intro_opacity = 1;
+			var intro_timer = setInterval(function(){
+			intro_opacity -= 0.01;
+			intro.style.opacity = intro_opacity;
+			if(intro_opacity <= 0){
+				clearInterval(intro_timer);
+				intro.style.display = "none";
+			}
+		}, 10);
+		}, 1000);
+
+		// 마커 정보창 끄고 닫기 함수
+		function mouseOverListener(map, marker, infoWindow) {
+			return function () {
+				infoWindow.open(map, marker);
+			};
+		}
+		function mouseOutListener(infoWindow) {
+			return function () {
+				infoWindow.close();
+			};
+		}
+		
+		//체크박스 함수
+		var CCTV_markers = [];
+		var police_markers = [];
+		var bell_markers = [];
+		var fireStation_markers = [];
+		var lamp_markers = [];
+		var clusterer;
+
+
+		function checkBox(obj) {
+			var result = obj.value;
+			if (obj.checked) {
+				switch (result) {
+					case "CCTV":
+						getCCTV();
+						break;
+					case "BELL":
+						getEmergencyBell();
+						break;
+					case "POLICE":
+						getPolice();
+						break;
+					case "FIRE":
+						getfireStation();
+						break;
+					case "LAMP":
+						getLamp();
+						break;
+				}
+			} else {
+			switch (result) {
+				case "CCTV":
+					for (var i = 0; i < CCTV_markers.length; i++) {
+						clusterer.removeMarker(CCTV_markers[i]);
+					}
+					break;
+				case "BELL":
+					for (var i = 0; i < bell_markers.length; i++) {
+						clusterer.removeMarker(bell_markers[i]);
+					}
+					break;
+				case "POLICE":
+					for (var i = 0; i < police_markers.length; i++) {
+						clusterer.removeMarker(police_markers[i]);
+					}
+					break;
+				case "FIRE":
+					for (var i = 0; i < fireStation_markers.length; i++) {
+						clusterer.removeMarker(fireStation_markers[i]);
+					}
+					break;
+				case "LAMP":
+					for (var i = 0; i < lamp_markers.length; i++) {
+						clusterer.removeMarker(lamp_markers[i]);
+					}
+					break;
+			}
+		}
+	}
+	</script>
+</body>
+
+</html>
