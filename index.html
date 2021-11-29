@@ -140,21 +140,6 @@
 		pedestrian_route(start, end, map);
 		
 
-		// 인트로 에니메이션
-
-		setTimeout(function(){
-			var intro = document.getElementById("intro");
-			var intro_opacity = 1;
-			var intro_timer = setInterval(function(){
-			intro_opacity -= 0.01;
-			intro.style.opacity = intro_opacity;
-			if(intro_opacity <= 0){
-				clearInterval(intro_timer);
-				intro.style.display = "none";
-			}
-		}, 10);
-		}, 1000);
-
 		// 마커 정보창 끄고 닫기 함수
 		function mouseOverListener(map, marker, infoWindow) {
 			return function () {
