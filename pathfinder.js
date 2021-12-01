@@ -1,7 +1,3 @@
-// 장소 검색 객체를 생성합니다
-var ps = new kakao.maps.services.Places();  
-
-
 // 키워드 검색을 요청하는 함수입니다
 function searchPlaces() {
 
