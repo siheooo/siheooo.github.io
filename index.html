@@ -12,9 +12,10 @@
 	<script src="pedestrian_route.js"></script>
 	<script src="markers.js"></script>
 	<script src="buttons.js"></script>
+	<script src="pathfinder.js"></script>
 	<script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx7b7144d6b822440c89d5008ebeb3fd17"></script>
 	<script
-		src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=66583dec16d8abc21e4a6f52204c826a&libraries=clusterer,services"></script>
+		src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=7a59eac00d91c8ec4a4034f8afb2411f&libraries=clusterer,services"></script>
 </head>
 
 <body>
@@ -48,8 +49,8 @@
 		<audio id="siren" src="assets/siren.wav"></audio>
 	</div>
 
-	<!--전화-->
-	<div class="custom_control call_btn radius_border">
+    <!--전화-->
+    <div class="custom_control call_btn radius_border">
 		<span onclick="document.location.href='tel:112'"><img src="https://w7.pngwing.com/pngs/811/53/png-transparent-phone-contact-icon-logo-iphone-computer-icons-telephone-call-phone-icon-electronics-text-grass-thumbnail.png" alt="전화"></span>
 	</div>
 
@@ -73,26 +74,22 @@
 			<div class="contents">
 				<a href="#" class="sidebar_close_btn" onclick="closeSidebar()">&times;</a>
 				<p>길찾기</p>
-				<form id="psform" method="post" class="pathsearch">
-					<!--출발지 입력-->
-					<div style="float: left; margin-bottom: 5px;">
-						<img src="https://cdn.discordapp.com/attachments/752108988719562776/912587994039455774/2.png">
-						<input type="text" id="strPoint" name="strPoint" placeholder="출발지">
-					</div>
-				
-					<!--도착지 입력-->
-					<div style="float: left">
-						<img src="https://cdn.discordapp.com/attachments/752108988719562776/912587994039455774/2.png">
-						<input type="text" id="arrPoint" name="arrPoint" placeholder="도착지">
-					</div>
-				
-					<!--길찾기 버튼-->
-					<div style="float: right">
-						<input type="image" id="str_arr_submit" name="str_arr_submit" class="searchbutton"
-							src="https://cdn.discordapp.com/attachments/752108988719562776/912546711619108874/searchbutton.png">
-						</input>
-					</div>
-				</form>
+				<div class="map_wrap">
+					<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+						<div id="menu_wrap" class="bg_white">
+							<div class="option">
+								<div>
+									<form onsubmit="searchPlaces(); return false;">
+										키워드 : <input type="text" value="이태원 맛집" id="keyword" size="15"> 
+										<button type="submit">검색하기</button> 
+									</form>
+								</div>
+							</div>
+							<hr>
+							<ul id="placesList"></ul>
+							<div id="pagination"></div>
+						</div>
+				</div>	
 			</div>
 		</div>
 		<div id ="subSidebar_2" class ="subSidebar">
@@ -113,6 +110,10 @@
 		</div>
 		
 	</nav>
+	<div id="intro">
+		<div class="title">안심 길 찾기</div>
+	</div>
+
 	<script>
 
 		// 출발, 도착 좌표 카카오 맵 객체 생성
@@ -139,6 +140,21 @@
 
 		pedestrian_route(start, end, map);
 		
+
+		// 인트로 에니메이션
+
+		setTimeout(function(){
+			var intro = document.getElementById("intro");
+			var intro_opacity = 1;
+			var intro_timer = setInterval(function(){
+			intro_opacity -= 0.01;
+			intro.style.opacity = intro_opacity;
+			if(intro_opacity <= 0){
+				clearInterval(intro_timer);
+				intro.style.display = "none";
+			}
+		}, 10);
+		}, 1000);
 
 		// 마커 정보창 끄고 닫기 함수
 		function mouseOverListener(map, marker, infoWindow) {
