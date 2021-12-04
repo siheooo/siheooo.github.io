@@ -7,7 +7,7 @@ var insttNm_CCTV2 = "부산광역시%20남구청"
 // insttNm_CCTV3 = "부산광역시%20금정구청" 같이 새로 변수 만들어서 fetch하면 그 구역 CCTV도 나옵니다.
 
 function getCCTV() {
-    var imgSrc = 'assets/cctv.png'
+    var imgSrc = './assets/cctv.png'
     
         //마커 이미지의 크기
         imgSize = new kakao.maps.Size(40, 40), 
@@ -70,7 +70,7 @@ function getCCTV() {
 var serviceKey_emergencyBell = 'i0omZLilsWQxFd3kY5EnR0GjiK1v%2BbymoppTqZykRtT9hRyM4QCxVyW4gcV%2BczyPKQSAH17efFCAbzELgv0wDA%3D%3D';
 function getEmergencyBell(){
     //비상벨 이미지
-    var imgSrc = 'assets/emergencyBell.png', 
+    var imgSrc = './assets/emergencyBell.png', 
         //마커 이미지의 크기
         imgSize = new kakao.maps.Size(40, 40), 
         //마커 이미지의 옵션, 손가락 끝이 해당 좌표를 가리키도록 위치시켰습니다. 
@@ -174,7 +174,7 @@ const policeUrl = 'https://api.odcloud.kr/api/15054711/v1/uddi:f038d752-ff35-4a2
 function getPolice(){
     
     //경찰서 이미지
-    var imgSrc = 'assets/police.png', 
+    var imgSrc = './assets/police.png', 
         //마커 이미지의 크기
         imgSize = new kakao.maps.Size(40, 40), 
         //마커 이미지의 옵션, 손가락 끝이 해당 좌표를 가리키도록 위치시켰습니다. 
@@ -301,7 +301,7 @@ const SecureUrl = "http://api.data.go.kr/openapi/tn_pubr_public_scrty_lmp_api?se
 
 function getLamp(){
     //가로등 이미지
-    var imgSrc = 'assets/street-lamp.png', 
+    var imgSrc = './assets/street-lamp.png', 
         //마커 이미지의 크기
         imgSize = new kakao.maps.Size(30, 30), 
         //마커 이미지의 옵션, 손가락 끝이 해당 좌표를 가리키도록 위치시켰습니다. 
