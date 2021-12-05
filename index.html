@@ -9,12 +9,11 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
-	<script src="pedestrian_route.js"></script>
-	<script src="markers.js"></script>
-	<script src="buttons.js"></script>
+	<script type="text/javascript" src="pedestrian_route.js"></script>
+	<script type="text/javascript" src="markers.js"></script>
+	<script type="text/javascript" src="buttons.js"></script>
 	<script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx7b7144d6b822440c89d5008ebeb3fd17"></script>
-	<script
-		src="https//dapi.kakao.com/v2/maps/sdk.js?appkey=66583dec16d8abc21e4a6f52204c826a&libraries=clusterer,services"></script>
+	<script type="text/javascript" src="https//dapi.kakao.com/v2/maps/sdk.js?appkey=66583dec16d8abc21e4a6f52204c826a&libraries=clusterer,services"></script>
 </head>
 
 <body>
@@ -77,8 +76,8 @@
 				
 					<div id="menu_wrap" class="bg_white">
 						<div class="option">
-							<form>
-								키워드 : <input type="text" value="부경대학교 대연캠퍼스" id="keyword" size="15"> 
+							<form class="psinput">
+								장소검색 : <input type="text" value="부경대학교 대연캠퍼스" id="keyword" size="20" style="margin-bottom: 5px;"> <br>
 								<button type="submit" onclick="searchStr(); return false;">출발지로</button> 
 								<button type="submit" onclick="searchDst(); return false;">도착지로</button> 
 							</form>
@@ -140,10 +139,6 @@
 	</nav>
 
 	<script>
-		// 출발, 도착 좌표 카카오 맵 객체 생성
-		var start = new kakao.maps.LatLng(35.13367784973298, 129.1049204111099); // 대연 캠퍼스
-		var end = new kakao.maps.LatLng(35.11736284697083, 129.09162466048417); // 용당 캠퍼스
-
 		// 지도 표시
 		var mapContainer = document.getElementById("map"); // 지도를 표시할 div
 		var mapOption = {
@@ -178,6 +173,8 @@
 
 			// 검색된 장소를 출발지로 등록합니다
 			start = bounds
+			console.log(start)
+			pedestrian_route(start,end,map)
 		}
 
 		// 도착지 검색 함수입니다.
@@ -192,6 +189,8 @@
 
 			// 검색된 장소를 도착지로 등록합니다
 			end = bounds
+			console.log(end)
+			pedestrian_route(start,end,map)
 		}
 
 
