@@ -12,10 +12,9 @@
 	<script src="pedestrian_route.js"></script>
 	<script src="markers.js"></script>
 	<script src="buttons.js"></script>
-	<script src="pathfinder.js"></script>
 	<script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx7b7144d6b822440c89d5008ebeb3fd17"></script>
 	<script
-		src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=66583dec16d8abc21e4a6f52204c826a&libraries=clusterer,services"></script>
+		src="https//dapi.kakao.com/v2/maps/sdk.js?appkey=66583dec16d8abc21e4a6f52204c826a&libraries=clusterer,services"></script>
 </head>
 
 <body>
@@ -23,7 +22,7 @@
 	<!-- 현재위치 표시 버튼 -->
 	<div class="custom_control gps_btn radius_border">
 		<span onclick="current_location()"><img
-				src="assets/gps.png" alt="gps"></span>
+				src="./assets/gps.png" alt="gps"></span>
 	</div>
 
 	<!-- 사이드 바 on 버튼 -->
@@ -46,61 +45,48 @@
 	<!-- 사이렌 소리 버튼 -->
 	<div class="custom_control siren_btn radius_border">
 		<span onclick="siren()"><img src="https://cdn-icons-png.flaticon.com/512/763/763421.png" alt="사이렌"></span>
-		<audio id="siren" src="assets/siren.wav"></audio>
+		<audio id="siren" src="./assets/siren.wav"></audio>
 	</div>
 
     <!--전화-->
-	<div class="custom_control call_btn radius_border">
-		<span onclick="document.location.href='tel:112'"><img src="https://w7.pngwing.com/pngs/811/53/png-transparent-phone-contact-icon-logo-iphone-computer-icons-telephone-call-phone-icon-electronics-text-grass-thumbnail.png" alt="전화"></span>
+    <div class="custom_control call_btn radius_border">
+		<span onclick="call()"><img src="https://w7.pngwing.com/pngs/811/53/png-transparent-phone-contact-icon-logo-iphone-computer-icons-telephone-call-phone-icon-electronics-text-grass-thumbnail.png" alt="전화"></span>
 	</div>
 
 	<!--문자-->
 	<div class="custom_control sms_btn radius_border">
-		<span onclick="document.location.href='sms:010-0000-0000?body=안심귀가 서비스 비상문자입니다.'"><img src="https://d29fhpw069ctt2.cloudfront.net/icon/image/38198/preview.svg" alt="문자"></span>
+		<span onclick="sms()"><img src="https://d29fhpw069ctt2.cloudfront.net/icon/image/38198/preview.svg" alt="문자"></span>
 	</div>
-
+	
+	
 	<!-- 사이드 바 -->
 	<nav>
 		<div id="sidebar"> <a href="#" class="sidebar_close_btn" onclick="closeSidebar()">&times;</a>
 			<div class="contents">
 				<a href="#" class="menu" onclick="openSubSidebar_1()" >길 찾기</a>
 				<a href="#" class="menu" onclick="openSubSidebar_2()" >마커 선택</a>
-				<a href="#" class="menu"></a>
+				<a href="#" class="menu" onclick="openSubSidebar_3()" >비상연락처</a>
 				<a href="#" class="menu"></a>
 			</div>
 		</div>
 		<div id ="subSidebar_1" class ="subSidebar">
 			<div class="contents">
 				<a href="#" class="sidebar_close_btn" onclick="closeSidebar()">&times;</a>
-				<p>길찾기</p>
-				<div id="menu_wrap" class="bg_white">
-					<div class="option">
-						<div>
+				<div class="map_wrap">
+					<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+				
+					<div id="menu_wrap" class="bg_white">
+						<div class="option">
 							<form onsubmit="searchPlaces(); return false;">
-								키워드 : <input type="text" value="부경대학교" id="keyword" size="20"> 
+								키워드 : <input type="text" value="부경대학교" id="keyword" size="15"> 
 								<button type="submit">검색하기</button> 
 							</form>
 						</div>
+						<hr>
+						<ul id="placesList"></ul>
+						<div id="pagination"></div>
 					</div>
-					<hr>
-					<ul id="placesList"></ul>
-					<div id="pagination"></div>
-				</div>
-			
-					</div>
-
-					<!---------------------------------추가된 부분----------------------------------------->
-					<!--마커 선택 버튼-->
-					<div style="float: left">
-						<input type="button" id="checkbtn" onclick="selectMarkers()" value="지도에서 경유할 시설물 마커 선택하기">
-					</div>
-					<div>
-						<p>-</p>
-						<p id="default_route" style="font-size: 15px;">기존 경로 시간, 거리 안내</p>
-						<p id="optional_route"style="font-size: 15px;">추가 경로 시간, 거리 안내</p>
-					</div>
-					
-				</form>
+				</div>	
 			</div>
 		</div>
 		<div id ="subSidebar_2" class ="subSidebar">
@@ -119,10 +105,45 @@
                 </form>
 			</div>
 		</div>
-		
+		<div id ="subSidebar_3" class ="subSidebar">
+			<div class="contents">
+				<a href="#" class="sidebar_close_btn" onclick="closeSidebar()">&times;</a>
+				<!-- 비상 연락처 설정 -->
+				<form class="pathsearch">
+					<div style="float: left; margin-bottom: 5px;">
+						비상전화<br>
+						<img src="https://cdn.discordapp.com/attachments/752108988719562776/912587994039455774/2.png">
+						<input type="tel" 
+								id="callnumb" name="callnumb" 
+								value="112">
+					</div>
+					<div style="float: left; margin-bottom: 5px;">
+						비상문자<br>
+						<img src="https://cdn.discordapp.com/attachments/752108988719562776/912587994039455774/2.png">
+						<input type="tel"
+								id="smsnumb" name="smsnumb" 
+								value="010-0000-0000">
+					</div>
+					<div style="float: left;">
+						문자내용<br>
+						<div style="float: left; margin-right: 5px;">
+							<img src="https://cdn.discordapp.com/attachments/752108988719562776/912587994039455774/2.png">
+						</div>
+						<div style="float: right;">
+							<textarea rows="3" cols="30" id="smscont" name="smscont">안심귀가 서비스 비상문자입니다</textarea>
+						</div>
+					</div>									
+                </form>
+			</div>
+		</div>	
 	</nav>
 
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=66583dec16d8abc21e4a6f52204c826a&libraries=clusterer,services"></script>
 	<script>
+		// 출발, 도착 좌표 카카오 맵 객체 생성
+		var start = new kakao.maps.LatLng(35.13367784973298, 129.1049204111099); // 대연 캠퍼스
+		var end = new kakao.maps.LatLng(35.11736284697083, 129.09162466048417); // 용당 캠퍼스
+
 		// 지도 표시
 		var mapContainer = document.getElementById("map"); // 지도를 표시할 div
 		var mapOption = {
@@ -138,149 +159,274 @@
 
 		var current_location_marker; // 현재위치 마커
 
-		// 주소-좌표 변환 객체를 생성합니다
-		var geocoder = new kakao.maps.services.Geocoder();
+		// 마커를 담을 배열입니다
+		var psmarkers = [];
 
 		// 장소 검색 객체를 생성합니다
 		var ps = new kakao.maps.services.Places();  
 
-		// 출발, 도착 좌표 카카오 맵 객체 생성
-		var start = new kakao.maps.LatLng(35.13367784973298, 129.1049204111099); // 대연 캠퍼스
-		// var end = new kakao.maps.LatLng(35.11736284697083, 129.09162466048417); // 용당 캠퍼스
-		var end = new kakao.maps.LatLng(35.132568, 129.091948); 
+		// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+		var infowindow = new kakao.maps.InfoWindow({zIndex:1});
 
-		// 마커를 담을 배열입니다
-		var psmarkers = [];
+		// 키워드로 장소를 검색합니다
+		searchPlaces();
 
+		// 키워드 검색을 요청하는 함수입니다
+		function searchPlaces() {
 
-		// 마커 정보창 끄고 닫기 함수
-		function mouseOverListener(map, marker, infoWindow) {
-			return function () {
-				infoWindow.open(map, marker);
-			};
+			var keyword = document.getElementById('keyword').value;
+
+			if (!keyword.replace(/^\s+|\s+$/g, '')) {
+				alert('키워드를 입력해주세요!');
+				return false;
+			}
+
+			// 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+			ps.keywordSearch( keyword, placesSearchCB); 
 		}
-		function mouseOutListener(infoWindow) {
-			return function () {
-				infoWindow.close();
-			};
+
+		// 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
+		function placesSearchCB(data, status, pagination) {
+			if (status === kakao.maps.services.Status.OK) {
+
+				// 정상적으로 검색이 완료됐으면
+				// 검색 목록과 마커를 표출합니다
+				displayPlaces(data);
+
+				// 페이지 번호를 표출합니다
+				displayPagination(pagination);
+
+			} else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+
+				alert('검색 결과가 존재하지 않습니다.');
+				return;
+
+			} else if (status === kakao.maps.services.Status.ERROR) {
+
+				alert('검색 결과 중 오류가 발생했습니다.');
+				return;
+
+			}
 		}
 
-		//-------------------------------------------------추가된 부분
+		// 검색 결과 목록과 마커를 표출하는 함수입니다
+		function displayPlaces(places) {
+
+			var listEl = document.getElementById('placesList'), 
+			menuEl = document.getElementById('menu_wrap'),
+			fragment = document.createDocumentFragment(), 
+			bounds = new kakao.maps.LatLngBounds(), 
+			listStr = '';
+			
+			// 검색 결과 목록에 추가된 항목들을 제거합니다
+			removeAllChildNods(listEl);
+
+			// 지도에 표시되고 있는 마커를 제거합니다
+			removeMarker(psmarker);
+			
+			for ( var i=0; i<places.length; i++ ) {
+
+				// 마커를 생성하고 지도에 표시합니다
+				var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
+					psmarker = addMarker(placePosition, i), 
+					itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+
+				// 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+				// LatLngBounds 객체에 좌표를 추가합니다
+				bounds.extend(placePosition);
+
+				// 마커와 검색결과 항목에 mouseover 했을때
+				// 해당 장소에 인포윈도우에 장소명을 표시합니다
+				// mouseout 했을 때는 인포윈도우를 닫습니다
+				(function(psmarker, title) {
+					kakao.maps.event.addListener(psmarker, 'mouseover', function() {
+						displayInfowindow(psmarker, title);
+					});
+
+					kakao.maps.event.addListener(psmarker, 'mouseout', function() {
+						infowindow.close();
+					});
+
+					itemEl.onmouseover =  function () {
+						displayInfowindow(psmarker, title);
+					};
+
+					itemEl.onmouseout =  function () {
+						infowindow.close();
+					};
+				})(psmarker, places[i].place_name);
+
+				fragment.appendChild(itemEl);
+			}
+
+			// 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
+			listEl.appendChild(fragment);
+			menuEl.scrollTop = 0;
+
+			// 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+			map.setBounds(bounds);
+		}
+
+		// 검색결과 항목을 Element로 반환하는 함수입니다
+		function getListItem(index, places) {
+
+			var el = document.createElement('li'),
+			itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
+						'<div class="info">' +
+						'   <h5>' + places.place_name + '</h5>';
+
+			if (places.road_address_name) {
+				itemStr += '    <span>' + places.road_address_name + '</span>' +
+							'   <span class="jibun gray">' +  places.address_name  + '</span>';
+			} else {
+				itemStr += '    <span>' +  places.address_name  + '</span>'; 
+			}
+						
+			itemStr += '  <span class="tel">' + places.phone  + '</span>' +
+						'</div>';           
+
+			el.innerHTML = itemStr;
+			el.className = 'item';
+
+			return el;
+		}
+
+		// 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+		function addMarker(position, idx, title) {
+			var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+				imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
+				imgOptions =  {
+					spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+					spriteOrigin : new kakao.maps.Point(0, (idx*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+					offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+				},
+				markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+					psmarker = new kakao.maps.Marker({
+					position: position, // 마커의 위치
+					image: markerImage 
+				});
+
+			psmarker.setMap(map); // 지도 위에 마커를 표출합니다
+			psmarkers.push(psmarker);  // 배열에 생성된 마커를 추가합니다
+
+			return psmarker;
+		}
+
+		// 지도 위에 표시되고 있는 마커를 모두 제거합니다
+		function removeMarker(psmarker) {
+			for ( var i = 0; i < psmarkers.length; i++ ) {
+				psmarkers[i].setMap(null);
+			}   
+			psmarkers = [];
+		}
+
+		// 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
+		function displayPagination(pagination) {
+			var paginationEl = document.getElementById('pagination'),
+				fragment = document.createDocumentFragment(),
+				i; 
+
+			// 기존에 추가된 페이지번호를 삭제합니다
+			while (paginationEl.hasChildNodes()) {
+				paginationEl.removeChild (paginationEl.lastChild);
+			}
+
+			for (i=1; i<=pagination.last; i++) {
+				var el = document.createElement('a');
+				el.href = "#";
+				el.innerHTML = i;
+
+				if (i===pagination.current) {
+					el.className = 'on';
+				} else {
+					el.onclick = (function(i) {
+						return function() {
+							pagination.gotoPage(i);
+						}
+					})(i);
+				}
+
+				fragment.appendChild(el);
+			}
+			paginationEl.appendChild(fragment);
+		}
+
+		// 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
+		// 인포윈도우에 장소명을 표시합니다
+		function displayInfowindow(psmarker, title) {
+			var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+
+			infowindow.setContent(content);
+			infowindow.open(map, psmarker);
+		}
+
+		// 검색결과 목록의 자식 Element를 제거하는 함수입니다
+		function removeAllChildNods(el) {   
+			while (el.hasChildNodes()) {
+				el.removeChild (el.lastChild);
+			}
+		}
+
+
+		//체크박스 함수
 		var CCTV_markers = [];
 		var police_markers = [];
 		var bell_markers = [];
 		var fireStation_markers = [];
 		var lamp_markers = [];
 		var clusterer;
-		
-		var passList = []; // 선택된 마커 위치 리스트
-		var passListString = ""; // 선택된 마커들의 좌표를 담을 문자열
-		var polyline; // 경로(초기화를 위해 전역변수로 선언)
-		var time = 0; // 원래 소요시간
-		var time_pass = 0; // 경유시 소요시간
-		var time_diff = 0; // 원래 시간에서 경유시 시간의 차이
-		var distance = 0; // 원래 거리
-		var distance_pass = 0; // 경유시 거리
-		var distance_diff = 0; // 원래 거리에서 경유시 거리의 차이
 
-		pedestrian_route(start, end, map);
 
-		//마커 선택 버튼 눌렀을 때 함수
-		function selectMarkers(){
-			//사이드바를 내리고
-			closeSidebar();
-			//모든 마커 보이기
-			getCCTV();
-			getEmergencyBell();
-			getPolice();
-			getfireStation();
-			getLamp();
-		}
-
-		//선택 마커 이미지
-		var waypoint_imgSrc = [];
-		var waypoint_markerImage = [];
-		var waypoint_marker = [];
-
-		for(var i=1; i<=5; i++){
-			waypoint_imgSrc[i] = 'assets/'+i+'.png';
-				imgSize = new kakao.maps.Size(45, 50), 
-				imgOption = {offset: new kakao.maps.Point(20, 40)};
-			waypoint_markerImage[i] = new kakao.maps.MarkerImage(waypoint_imgSrc[i], imgSize, imgOption);
-		}
-		
-		function mouseClickListener(check, i, markerPosition, marker){
-			return function(){
-				setWaypoint(check, i, markerPosition, marker);
-            };
-		}
-
-		function setWaypoint(check, i, markerPosition, marker) {
-                    //이미 클릭된 마커면 선택 취소
-                    if(check[i]) {
-                        console.log("마커 선택 취소");
-                        check[i] = false;
-						// passList 에서 markerPosition 과 같은 값을 찾아서 삭제
-						for(var j = 0; j < passList.length; j++) {
-							if(passList[j] == markerPosition) {
-								passList.splice(j, 1);
-								break;
-							}
-						}
-						setWaypointToString();
-						pedestrian_route(start, end, map);
-                        return ;
-                    }
-
-                    if(passList.length == 5){
-                        console.log("5개 이상 선택됨");
-                        return ;
-                    }
-                    else {
-						console.log("마커 선택됨");
-                        check[i] = true;
-						passList.push(markerPosition);
-						insertWayPointMarker(check, i, markerPosition ,marker);
-						setWaypointToString();
-						pedestrian_route(start, end, map);
-                    }
-                }
-		
-
-		function insertWayPointMarker(check, i, markerPosition ,original_marker){
-			var marker = new kakao.maps.Marker({
-				position: markerPosition,
-				map: map,
-				image: waypoint_markerImage[passList.length],
-				clickable: true
-			});
-			waypoint_marker.push(marker);
-			// 경유지 마커 클릭시 삭제
-			kakao.maps.event.addListener(marker, 'click', function() {
-				deleteWaypointMarker(marker);
-				setWaypoint(check, i, markerPosition, original_marker);
-			});
-		}
-
-		function deleteWaypointMarker(marker){
-			marker.setMap(null);
-			var i = waypoint_marker.indexOf(marker);
-			waypoint_marker.splice(i, 1);
-			//해당 marker 뒤 경로 마커들 이미지 당기기
-			for(var j = i; j < waypoint_marker.length; j++){
-				waypoint_marker[j].setImage(waypoint_markerImage[++i]);
+		function checkBox(obj) {
+			var result = obj.value;
+			if (obj.checked) {
+				switch (result) {
+					case "CCTV":
+						getCCTV();
+						break;
+					case "BELL":
+						getEmergencyBell();
+						break;
+					case "POLICE":
+						getPolice();
+						break;
+					case "FIRE":
+						getfireStation();
+						break;
+					case "LAMP":
+						getLamp();
+						break;
+				}
+			} else {
+			switch (result) {
+				case "CCTV":
+					for (var i = 0; i < CCTV_markers.length; i++) {
+						clusterer.removeMarker(CCTV_markers[i]);
+					}
+					break;
+				case "BELL":
+					for (var i = 0; i < bell_markers.length; i++) {
+						clusterer.removeMarker(bell_markers[i]);
+					}
+					break;
+				case "POLICE":
+					for (var i = 0; i < police_markers.length; i++) {
+						clusterer.removeMarker(police_markers[i]);
+					}
+					break;
+				case "FIRE":
+					for (var i = 0; i < fireStation_markers.length; i++) {
+						clusterer.removeMarker(fireStation_markers[i]);
+					}
+					break;
+				case "LAMP":
+					for (var i = 0; i < lamp_markers.length; i++) {
+						clusterer.removeMarker(lamp_markers[i]);
+					}
+					break;
 			}
 		}
-
-		function setWaypointToString(){
-			// passList의 경도, 위도는 "," 각 좌표끼리는 _로 구분하여 string으로 변환
-			passListString = "";
-			for (var i = 0; i < passList.length; i++) {
-				passListString += passList[i].La + "," + passList[i].Ma + "_";
-			}
-			passListString = passListString.substring(0, passListString.length - 1);
-		}
-
+	}
 	</script>
 </body>
 
