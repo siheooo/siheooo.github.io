@@ -78,6 +78,7 @@ function displayPlaces(places) {
 
             itemEl.onmouseout =  function () {
                 infowindow.close();
+                coordinate.innerText = '좌표 값'
             };
         })(marker, places[i].place_name);
 
