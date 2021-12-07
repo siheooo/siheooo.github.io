@@ -51,8 +51,8 @@ function displayPlaces(places) {
     // 지도에 표시되고 있는 마커를 제거합니다
     removeMarker();
     
-    // 검색결과를 호출 (0~4)
-    for ( var i=0; i<4; i++ ) {
+    // 검색결과를 호출
+    for ( var i=0; i<1; i++ ) {
 
         // 마커를 생성하고 지도에 표시합니다
         var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
@@ -73,11 +73,12 @@ function displayPlaces(places) {
         (function(marker, title) {
             itemEl.onmouseover =  function () {
                 displayInfowindow(marker, title);
-                coordinate.innerText = marker.placePosition
+                coordinate.innerText = placePosition
             };
 
             itemEl.onmouseout =  function () {
                 infowindow.close();
+                coordinate.innerText = '좌표 값'
             };
         })(marker, places[i].place_name);
 
