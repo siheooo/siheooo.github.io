@@ -52,7 +52,7 @@ function displayPlaces(places) {
     removeMarker();
     
     // 검색결과를 호출
-    for ( var i=0; i<1; i++ ) {
+    for ( var i=0; i<places.length; i++ ) {
 
         // 마커를 생성하고 지도에 표시합니다
         var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
