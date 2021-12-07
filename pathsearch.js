@@ -51,7 +51,8 @@ function displayPlaces(places) {
     // 지도에 표시되고 있는 마커를 제거합니다
     removeMarker();
     
-    for ( var i=0; i<places.length; i++ ) {
+    // 검색결과를 3개 까지만 호출 (0~4)
+    for ( var i=0; i<2; i++ ) {
 
         // 마커를 생성하고 지도에 표시합니다
         var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
@@ -92,7 +93,11 @@ function displayPlaces(places) {
 
     // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
     map.setBounds(bounds);
+    //
+    var coordinate = document.getElementById("coordinate");
+        coordinate.innerText += new kakao.maps.LatLng(places[0].y, places[0].x)
 }
+    
 
 // 검색결과 항목을 Element로 반환하는 함수입니다
 function getListItem(index, places) {
