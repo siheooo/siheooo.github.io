@@ -73,7 +73,7 @@ function displayPlaces(places) {
         (function(marker, title) {
             itemEl.onmouseover =  function () {
                 displayInfowindow(marker, title);
-                coordinate.innerText = place[i].LatLng
+                coordinate.innerText = marker.getPosition();
             };
 
             itemEl.onmouseout =  function () {
@@ -111,9 +111,9 @@ function getListItem(index, places) {
     }
                  
       itemStr += '  <span class="tel">' + places.phone  + '</span>' +
-                '</div>'
                 + "<button type='button' onclick='coordtostr()'>출발지로</button>"
-                + "<button type='button' onclick='coordtodst()'>도착지로</button>";           
+                + "<button type='button' onclick='coordtodst()'>도착지로</button>"
+                + '</div>';
 
     el.innerHTML = itemStr;
     el.className = 'item';
