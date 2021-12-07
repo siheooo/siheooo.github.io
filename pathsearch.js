@@ -73,7 +73,7 @@ function displayPlaces(places) {
         (function(marker, title) {
             itemEl.onmouseover =  function () {
                 displayInfowindow(marker, title);
-                coordinate.innerText = placePosition
+                coordinate.innerText = '좌표 : ' + placePosition
             };
 
             itemEl.onmouseout =  function () {
