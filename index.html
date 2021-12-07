@@ -8,9 +8,8 @@
     <title>TEST</title>
     <script src = './pathsearch.js'></script>
     <link rel ="stylesheet" href ='./style.css' type='text/css'>
-    <script
-        type="text/javascript"
-        src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2530315e93e47fca95bcdf52cafb039d&libraries=clusterer"></script>
+	<script
+		src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=66583dec16d8abc21e4a6f52204c826a&libraries=clusterer,services"></script>
 </head>
 
 
@@ -27,6 +26,9 @@
                         <button type="submit">검색하기</button> 
                     </form>
                 </div>
+                <div id="coordinate">
+                    좌표 :
+                </div>
             </div>
             <hr>
             <ul id="placesList"></ul>
@@ -35,9 +37,6 @@
     </div>
     
 
-    <script 
-        type="text/javascript"
-        src="https//dapi.kakao.com/v2/maps/sdk.js?appkey=66583dec16d8abc21e4a6f52204c826a&libraries=services"></script>
     
     <script>
         // 마커를 담을 배열입니다
@@ -54,6 +53,9 @@
 
         // 장소 검색 객체를 생성합니다
         var ps = new kakao.maps.services.Places();  
+        
+        // 키워드로 검색한 장소의 좌표값을 반환할 객체입니다.
+        var coordinate = new kakao.maps.LatLng(0,0)
 
         // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
         var infowindow = new kakao.maps.InfoWindow({zIndex:1});
