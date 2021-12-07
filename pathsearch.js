@@ -110,7 +110,7 @@ function getListItem(index, places) {
         itemStr += '    <span>' +  places.address_name  + '</span>'; 
     }
                  
-      itemStr += '  <span class="tel">' + places.phone  + '</span>' +
+      itemStr += '  <span class="tel">' + places.phone  + '</span>'
                 + "<button type='button' onclick='coordtostr()'>출발지로</button>"
                 + "<button type='button' onclick='coordtodst()'>도착지로</button>"
                 + '</div>';
