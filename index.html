@@ -37,7 +37,12 @@
         </div>
     </div>
     
-
+    <div id="str" class="str">
+        출발지 
+    </div>
+    <div id="dst" class="dst">
+        도착지 
+    </div>
     
     <script>
         // 마커를 담을 배열입니다
@@ -68,11 +73,15 @@
         // 출발지를 버튼으로 입력받습니다.
         function coordtostr() {
         start = document.getElementById('coordinate')
+        var str = document.getElementById('str')
+            str.innerText = start        
         };
 
         // 도착지를 버튼으로 입력받습니다.
         function coordtodst() {
         end = document.getElementById('coordinate')
+        var dst = document.getElementById('str')
+            dst.innerText = end
         };
         
         // 길찾기 실행
