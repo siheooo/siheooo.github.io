@@ -7,6 +7,7 @@
 <head>
     <title>TEST</title>
     <script src = './pathsearch.js'></script>
+    <script src = './pedestrian_route.js'></script>
     <link rel ="stylesheet" href ='./style.css' type='text/css'>
 	<script
 		src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=66583dec16d8abc21e4a6f52204c826a&libraries=clusterer,services"></script>
@@ -59,6 +60,24 @@
 
         // 키워드로 장소를 검색합니다
         searchPlaces();
+
+        // 출발지와 도착지 객체 생성
+        var start = new kakao.map.LatLng(0,0);
+        var end = new kakao.map.LatLng(0,0);
+
+        // 출발지를 버튼으로 입력받습니다.
+        function coordtostr() {
+        start = document.getElementById('coordinate')
+        };
+
+        // 도착지를 버튼으로 입력받습니다.
+        function coordtodst() {
+        end = document.getElementById('coordinate')
+        };
+        
+        // 길찾기 실행
+        // pedestrian_route(start, end, map);
+
     </script>
 </body>
 
