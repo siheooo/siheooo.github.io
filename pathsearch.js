@@ -80,13 +80,14 @@ function displayPlaces(places) {
                 var coordX = coord.getLng();
                 var coordY = coord.getLat();
                 placenm.innerText = title;
+                console.log(title);
                 coordinateX.innerText = coordX;
                 coordinateY.innerText = coordY;
             };
 
             itemEl.onmouseout =  function () {
                 infowindow.close();
-                coordinate.innerText = '좌표 값'
+                placenm.innerText = '장소 명'
             };
         })(marker, places[i].place_name);
 
