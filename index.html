@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title></title>
+	<title>인터넷프로그래밍 3팀</title>
 	<link rel="stylesheet" href="style.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -247,12 +247,12 @@
 
         // 출발지와 도착지 객체 생성
         var start = new kakao.maps.LatLng(35.13367784973298, 129.1049204111099);
-        var str = document.getElementById('str');
+        var strnm = document.getElementById('strnm');
         var strX = document.getElementById('strX');
         var strY = document.getElementById('strY');
 
         var end = new kakao.maps.LatLng(35.132568, 129.091948);
-        var dst = document.getElementById('dst')
+        var dstnm = document.getElementById('dstnm')
         var dstX = document.getElementById('dstX')
         var dstY = document.getElementById('dstY')
 
@@ -315,7 +315,7 @@
             var startnm = document.getElementById('placenm')
             var startX = document.getElementById('coordinateX')
             var startY = document.getElementById('coordinateY')
-            str.innerText = startnm.innerText
+            strnm.innerText = startnm.innerText
             strX.innerText = startX.innerText
             strY.innerText = startY.innerText
             console.log(startnm)
