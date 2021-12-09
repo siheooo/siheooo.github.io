@@ -100,49 +100,49 @@
 				</div>
 
 				<br>
-
-				<div class="option">
-
-					<div>
-						<!--키워드를 받아올 form-->
-						<form onsubmit="searchPlaces(); return false;">
-
-							<b style="font-size: 20px; color:rgb(43, 203, 140);">키워드</b> : 
-							<input type="text" value="부경대학교" id="keyword" size="18"> 
-							<br>
-							<!--키워드 검색을 실행할 submit 버튼-->
-							<button type="submit" class="searchbutton">검색하기</button>
-							<!--경유지 선택 버튼-->
-							<button type="button" class="searchbutton" onclick="selectMarkers(); return false;">경유지</button>
-							<!--길찾기를 실행할 버튼-->
-							<button type='button' class="searchbutton" onclick='letpede(); return false;'>길찾기</button>
-						</form>
-					</div>
-
-					<br>
-
-					<div id="strnm" style="color: rgb(43, 203, 140);">
-						출발지 : 
-					</div>
-					<div id="dstnm" style="color: rgb(43, 203, 140);">
-						도착지 : 
-					</div>
-
-				<br>
-
-				<!--경로에 따른 거리 및 시간-->
-				<div id="default_route" style="font-size: 15px;">기존 경로 시간, 거리 안내</div>
-				<div id="optional_route"style="font-size: 15px;">추가 경로 시간, 거리 안내</div>
-
-
-
-				<hr>
-
-				<!--검색으로 받아온 Eliment 리스트-->
-				<ul id="placesList"></ul>
+				<div id="menu_wrap" class="bg_white">
+					<div class="option">
+						<div>
+							<!--키워드를 받아올 form-->
+							<form onsubmit="searchPlaces(); return false;">
 	
-				<!--페이지 구분-->
-				<div id="pagination"></div>
+								<b style="font-size: 20px; color:rgb(43, 203, 140);">키워드</b> : 
+								<input type="text" value="부경대학교" id="keyword" size="18"> 
+								<br>
+								<!--키워드 검색을 실행할 submit 버튼-->
+								<button type="submit" class="searchbutton">검색하기</button>
+								<!--경유지 선택 버튼-->
+								<button type="button" class="searchbutton" onclick="selectMarkers(); return false;">경유지</button>
+								<!--길찾기를 실행할 버튼-->
+								<button type='button' class="searchbutton" onclick='letpede(); return false;'>길찾기</button>
+							</form>
+						</div>
+	
+						<br>
+	
+						<div id="strnm" style="color: rgb(43, 203, 140);">
+							출발지 : 
+						</div>
+						<div id="dstnm" style="color: rgb(43, 203, 140);">
+							도착지 : 
+						</div>
+	
+					<br>
+	
+					<!--경로에 따른 거리 및 시간-->
+					<div id="default_route" style="font-size: 15px;">기존 경로 시간, 거리 안내</div>
+					<div id="optional_route"style="font-size: 15px;">추가 경로 시간, 거리 안내</div>
+	
+	
+	
+					<hr>
+	
+					<!--검색으로 받아온 Eliment 리스트-->
+					<ul id="placesList"></ul>
+		
+					<!--페이지 구분-->
+					<div id="pagination"></div>
+				</div>
 			</div>
 		</div>
 
