@@ -9,6 +9,8 @@
     <script src = './pathsearch.js'></script>
     <script src = './pedestrian_route.js'></script>
     <link rel ="stylesheet" href ='./style.css' type='text/css'>
+    <script
+        src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx7b7144d6b822440c89d5008ebeb3fd17"></script>
 	<script
 		src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=66583dec16d8abc21e4a6f52204c826a&libraries=clusterer,services"></script>
 </head>
@@ -27,41 +29,77 @@
                         <button type="submit">검색하기</button> 
                     </form>
                 </div>
-                <div id="coordinate">
-                    좌표 :
+                <div id="coordinate" style='display: none;'>
+                    좌표 값
                 </div>
+                <div id="coordinateX" style='display: none;'>
+                    X좌표 값
+                </div>
+                <div id="coordinateY" style='display: none;'>
+                    Y좌표 값
+                </div>
+
             </div>
+            <button type='button' onclick='letpede(); return false;'>길찾기</button>
             <hr>
             <ul id="placesList"></ul>
             <div id="pagination"></div>
         </div>
     </div>
     
-    <div class="str">
+    <div class="str" style='display: none;'>
         <b>출발지</b>
-        <div id="str">
+        <div id="str" style='display: none;'>
             좌표
         </div>
+        <div id="strX" style='display: none;'>
+            X 좌표
+        </div>
+        <div id="strY" style='display: none;'>
+            Y 좌표
+        </div>
     </div>
-    <div class="dst">
+    <div class="dst" style='display: none;'>
         <b>도착지</b>
-        <div id="dst">
+        <div id="dst" style='display: none;'>
             좌표
         </div>
+        <div id="dstX" style='display: none;'>
+            X 좌표
+        </div>
+        <div id="dstY" style='display: none;'>
+            Y 좌표
+        </div>
     </div>
-    
+    <div>
+        <p>-</p>
+        <p id="default_route" style="font-size: 15px;">기존 경로 시간, 거리 안내</p>
+        <p id="optional_route"style="font-size: 15px;">추가 경로 시간, 거리 안내</p>
+    </div>
+
     <script>
         // 마커를 담을 배열입니다
         var markers = [];
 
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
             mapOption = {
-                center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
-                level: 3 // 지도의 확대 레벨
+                center: new kakao.maps.LatLng(35.13367784973298, 129.1049204111099), // 지도의 중심좌표
+                level: 5 // 지도의 확대 레벨
             };  
 
         // 지도를 생성합니다    
         var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+        // 출발지와 도착지 객체 생성
+        var start = new kakao.maps.LatLng(35.13367784973298, 129.1049204111099);
+        var str = document.getElementById('str');
+        var strX = document.getElementById('strX');
+        var strY = document.getElementById('strY');
+
+        var end = new kakao.maps.LatLng(35.132568, 129.091948);
+        var dst = document.getElementById('dst')
+        var dstX = document.getElementById('dstX')
+        var dstY = document.getElementById('dstY')
 
         // 장소 검색 객체를 생성합니다
         var ps = new kakao.maps.services.Places();  
@@ -72,27 +110,53 @@
         // 키워드로 장소를 검색합니다
         searchPlaces();
 
-        // 출발지와 도착지 객체 생성
-        var start = new kakao.map.LatLng(0,0);
-        var end = new kakao.map.LatLng(0,0);
 
         // 출발지를 버튼으로 입력받습니다.
         function coordtostr() {
-        start = document.getElementById('coordinate')
-        var str = document.getElementById('str')
+            start = document.getElementById('coordinate')
+            var startX = document.getElementById('coordinateX')
+            var startY = document.getElementById('coordinateY')
             str.innerText = start.innerText
+            strX.innerText = startX.innerText
+            strY.innerText = startY.innerText
+            console.log(start)
+            console.log(startX)
+            console.log(startY)
         };
 
         // 도착지를 버튼으로 입력받습니다.
         function coordtodst() {
-        end = document.getElementById('coordinate')
-        var dst = document.getElementById('dst')
+            end = document.getElementById('coordinate')
+            var endX = document.getElementById('coordinateX')
+            var endY = document.getElementById('coordinateY')
             dst.innerText = end.innerText
+            dstX.innerText = endX.innerText
+            dstY.innerText = endY.innerText
+            console.log(end)
+            console.log(endX)
+            console.log(endY)
         };
-        
-        // 길찾기 실행
-        // pedestrian_route(start, end, map);
 
+        // 길 찾기
+        var passList = []; // 선택된 마커 위치 리스트
+		var passListString = ""; // 선택된 마커들의 좌표를 담을 문자열
+		var polyline; // 경로(초기화를 위해 전역변수로 선언)
+		var time = 0; // 원래 소요시간
+		var time_pass = 0; // 경유시 소요시간
+		var time_diff = 0; // 원래 시간에서 경유시 시간의 차이
+		var distance = 0; // 원래 거리
+		var distance_pass = 0; // 경유시 거리
+		var distance_diff = 0; // 원래 거리에서 경유시 거리의 차이
+
+
+        function letpede() {
+            start = new kakao.maps.LatLng(strY.innerText, strX.innerText)
+            end = new kakao.maps.LatLng(dstY.innerText, dstX.innerText);
+            map = map;
+            console.log(start)
+            console.log(end)
+            pedestrian_route(start, end, map);
+        };
     </script>
 </body>
 
