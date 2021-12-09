@@ -235,9 +235,6 @@
 		
 		
 	</nav>
-	<div id="intro">
-		<div class="title">안심 길 찾기</div>
-	</div>
 
 	<script>
 
@@ -279,19 +276,6 @@
         // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
         var infowindow = new kakao.maps.InfoWindow({zIndex:1});
 
-		// 인트로 에니메이션
-		setTimeout(function(){
-			var intro = document.getElementById("intro");
-			var intro_opacity = 1;
-			var intro_timer = setInterval(function(){
-			intro_opacity -= 0.01;
-			intro.style.opacity = intro_opacity;
-			if(intro_opacity <= 0){
-				clearInterval(intro_timer);
-				intro.style.display = "none";
-			}
-		}, 10);
-		}, 1000);
 
 		// 마커 정보창 끄고 닫기 함수
 		function mouseOverListener(map, marker, infoWindow) {
