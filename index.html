@@ -1,471 +1,419 @@
-<!DOCTYPE html>
-<html>
+body {
+    margin: 0;
+    padding: 0;
+}
+.radius_border {
+    border: 1px solid #919191;
+    border-radius: 5px;
+}
 
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>인터넷프로그래밍 3팀</title>
-	<link rel="stylesheet" href="style.css">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
-	<script src="pedestrian_route.js"></script>
-	<script src="markers.js"></script>
-	<script src="buttons.js"></script>
-	<script src="pathsearch.js"></script>
-	<script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx7b7144d6b822440c89d5008ebeb3fd17"></script>
-	<script
-		src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=66583dec16d8abc21e4a6f52204c826a&libraries=clusterer,services"></script>
-</head>
+.custom_control span {
+    display: block;
+    text-align: center;
+    cursor: pointer;
+}
 
-<body>
-	<div id="map"></div>
-	<!-- 현재위치 표시 버튼 -->
-	<div class="custom_control gps_btn radius_border">
-		<span onclick="current_location()"><img
-				src="assets/gps.png" alt="gps"></span>
-	</div>
+.gps_btn {
+    position: absolute;
+    top: 70px;
+    right: 30px;
+    width: 36px;
+    overflow: hidden;
+    z-index: 1;
+    background-color: #f5f5f5;
+}
 
-	<!-- 사이드 바 on 버튼 -->
-	<div class="custom_control sidebar_open_btn radius_border" onclick="openSidebar()">
-		<span>
-			<img src="assets/menu_open.png" alt="메뉴" 
-			onmouseover="this.src='assets/menu_close.png'"
-			onmouseout="this.src='assets/menu_open.png'">
-		</span>
-	</div>
+.gps_btn span img {
+    width: 20px;
+    height: 20px;
+    padding: 7px 0 4px 0;
+    border: none;
+}
 
-	<!-- 지도 확대 축소 버튼 -->
-	<div class="custom_control zoom_btn radius_border">
-		<span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png"
-				alt="확대"></span>
-		<span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png"
-				alt="축소"></span>
-		<hr>
-	</div>
+.sidebar_open_btn {
+    position: absolute;
+    top: 50px;
+    left: 30px;
+    width: 60px;
+    height: 50px;
+    padding-top: 5px;
+    overflow: hidden;
+    z-index: 1;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    font-size: 30px;
+    color:rgb(34, 204, 140);
+    font-family: 'Times New Roman', Times, serif;
+}
+.sidebar_open_btn:hover {
+    background:rgb(34, 204, 140);
+    color: white;
+    transition: 0.3s;
+}
 
-	<!-- 사이렌 소리 버튼 -->
-	<div class="custom_control siren_btn radius_border">
-		<span onclick="siren()"><img src="https://cdn-icons-png.flaticon.com/512/763/763421.png" alt="사이렌"></span>
-		<audio id="siren" src="assets/siren.wav"></audio>
-	</div>
+.sidebar_open_btn span img {
+    margin-top: 2px;
+    width: 50px;
+    height: 40px;
+}
 
-    <!--전화-->
-	<div class="custom_control call_btn radius_border">
-		<span onclick="call()"><img src="https://w7.pngwing.com/pngs/811/53/png-transparent-phone-contact-icon-logo-iphone-computer-icons-telephone-call-phone-icon-electronics-text-grass-thumbnail.png" alt="전화"></span>
-	</div>
+/*마커 선택 사이드바*/
+#subSidebar_2{
+    display: flex;
+    justify-content: center;
+    font-size: 30px;
+    color:rgb(34, 204, 140);
+}
+/*마커 선택 확인 버튼*/
+#checkbtn {
+    background-color: rgb(34, 204, 140);
 
-	<!--문자-->
-	<div class="custom_control sms_btn radius_border">
-		<span onclick="sms()"><img src="https://d29fhpw069ctt2.cloudfront.net/icon/image/38198/preview.svg" alt="문자"></span>
-	</div>
+    color:#fff;
+ 
+    text-align: center;
+    border: none;
+    cursor: pointer;
+}
 
-	<!-- 사이드 바 -->
-	<nav>
-		<div id="sidebar"> <div class="sidebar_close_btn" onclick="closeSidebar()">&times;</div>
-			<div class="contents">
-				<div class="menu" onclick="openSubSidebar(1)"
-					onmouseover="this.children[0].src='assets/findway_white.png'"
-					onmouseout="this.children[0].src='assets/findway_green.png'">
-					<img src="assets/findway_green.png" alt="길찾기">
-					길찾기
-				</div>
-				<div class="menu" onclick="openSubSidebar(2)"
-					onmouseover="this.children[0].src='assets/marker_white.png'"
-					onmouseout="this.children[0].src='assets/marker_green.png'">
-					<img src="assets/marker_green.png" alt="마커 선택">
-					마커 선택
-				</div>
-				<div class="menu" onclick="openSubSidebar(3)"
-					onmouseover="this.children[0].src='assets/bookmark_white.png'"
-					onmouseout="this.children[0].src='assets/bookmark_green.png'">
-					<img src="assets/bookmark_green.png" alt="이전 기록">
-					이전 기록
-				</div>
-				<div class="menu" onclick="openSubSidebar(4)"
-					onmouseover="this.children[0].src='assets/more_white.png'"
-					onmouseout="this.children[0].src='assets/more_green.png'">
-					<img src="assets/more_green.png" alt="더보기">
-					더보기
-				</div>
-			</div>
-		</div>
+.zoom_btn span {
+    width: 36px;
+    height: 40px;
+    text-align: center;
+    cursor: pointer;
+}
 
-		<div id ="subSidebar_1" class ="subSidebar">
+.zoom_btn {
+    position: absolute;
+    top: 120px;
+    right: 30px;
+    width: 36px;
+    height: 80px;
+    overflow: hidden;
+    z-index: 1;
+    background-color: #f5f5f5;
+}
 
-			<div class="contents" style="padding-left: 15px;">
-				
-				<div style="width: 100%; height: 30px;">
-					<a href="#" class="sidebar_close_btn" onclick="closeSidebar()">&times;</a>
-				</div>
+.zoom_btn span img {
+    width: 15px;
+    height: 15px;
+    padding: 12px 0;
+    border: none;
+}
 
-				<br>
-				<div id="menu_wrap" class="bg_white">
-					<div class="option">
-						<div>
-							<!--키워드를 받아올 form-->
-							<form>
-								<b style="font-size: 20px; color:rgb(43, 203, 140);">키워드</b> : 
-								<input type="text" value="부경대학교" id="keyword" size="18"> 
-							</form>
-							<br>
-							<!--키워드 검색을 실행할 submit 버튼-->
-							<button type="submit" class="searchbutton" onclick="searchPlaces(); return false;">검색하기</button>
-							<!--경유지 선택 버튼-->
-							<button type="button" class="searchbutton" onclick="selectMarkers(); return false;">경유지</button>
-							<!--길찾기를 실행할 버튼-->
-							<button type='button' class="searchbutton" onclick='letpede(); return false;'>길찾기</button>
-						</div>
-	
-						<br>
-	
-						<div id="strnm" style="font: size 14px; font-weight: bold; color: rgb(43, 203, 140);">
-							출발지 : 
-						</div>
-						<div id="dstnm" style="font: size 14px; font-weight: bold; color: rgb(43, 203, 140);">
-							도착지 : 
-						</div>
-	
-					<br>
-	
-					<!--경로에 따른 거리 및 시간-->
-					<div id="default_route" style="font-size: 12px;">기존 경로 시간, 거리 안내</div>
-					<div id="optional_route"style="font-size: 12px;">추가 경로 시간, 거리 안내</div>
-	
-	
-	
-					<hr>
-	
-					<!--검색으로 받아온 Eliment 리스트-->
-					<ul id="placesList"></ul>
-		
-					<!--페이지 구분-->
-					<div id="pagination"></div>
-				</div>
-			</div>
-		</div>
+.zoom_btn span:first-child {
+    border-bottom: 1px solid #bfbfbf;
+}
 
-		<div id ="subSidebar_2" class ="subSidebar">
-			<div class="contents">
-				<a href="#" class="sidebar_close_btn" onclick="closeSidebar()">&times;</a>
-				<!-- 마커 표시 선택 메뉴 들어갈 부분 -->
-				<form>
-					<ul>
-						<li style="list-style:none"><input type="checkbox" onchange="checkBox(this)" name="CCTV" id="CCTV" value="CCTV" > CCTV</li>
-						<li style="list-style:none"><input type="checkbox" onchange="checkBox(this)" name="BELL" id="BELL" value="BELL"> 비상벨</li>
-						<li style="list-style:none"><input type="checkbox" onchange="checkBox(this)" name="POLICE" id="POLICE" value="POLICE"> 경찰서</li>
-						<li style="list-style:none"><input type="checkbox" onchange="checkBox(this)" name="FIRE" id="FIRE" value="FIRE"> 소방서</li>
-						<li style="list-style:none"><input type="checkbox" onchange="checkBox(this)" name="LAMP" id="LAMP" value="LAMP"> 가로등</li>
-						<li style="list-style:none"><input type="button" id="checkbtn" onclick="closeSidebar()" value="확인"></li>
-					</ul>
-                </form>
-			</div>
-		</div>
-		<div id ="subSidebar_3" class ="subSidebar">
-			<div class="contents">
-				<a href="#" class="sidebar_close_btn" onclick="closeSidebar()">&times;</a>
-				<!-- 비상 연락처 설정 -->
-				<form class="pathsearch">
-					<div style="float: left; margin-bottom: 5px;">
-						비상전화<br>
-						<img src="https://cdn.discordapp.com/attachments/752108988719562776/912587994039455774/2.png">
-						<input type="tel" 
-								id="callnumb" name="callnumb" 
-								value="112">
-					</div>
-					<div style="float: left; margin-bottom: 5px;">
-						비상문자<br>
-						<img src="https://cdn.discordapp.com/attachments/752108988719562776/912587994039455774/2.png">
-						<input type="tel"
-								id="smsnumb" name="smsnumb" 
-								value="010-0000-0000">
-					</div>
-					<div style="float: left;">
-						문자내용<br>
-						<div style="float: left; margin-right: 5px;">
-							<img src="https://cdn.discordapp.com/attachments/752108988719562776/912587994039455774/2.png">
-						</div>
-						<div style="float: right;">
-							<textarea rows="3" cols="30" id="smscont" name="smscont">안심귀가 서비스 비상문자입니다</textarea>
-						</div>
-					</div>									
-				</form>
-			</div>
-		</div>	
+.siren_btn {
+    position: absolute;
+    bottom: 220px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    z-index: 1;
+    background-color: #f5f5f5;
+}
 
-		<!--받아온 좌표 값을 임시로 저장 해 둘 hidden divs-->
-		<div id="placenm" style='height: 0px; opacity: 0;'>
-			좌표 값
-		</div>
-		<div id="coordinateX" style='height: 0px; opacity: 0;'>
-			X좌표 값
-		</div>
-		<div id="coordinateY" style='height: 0px; opacity: 0;'>
-			Y좌표 값
-		</div>
-		
+.siren_btn span img {
+    width: 30px;
+    height: 30px;
+    padding: 8px 0;
+    border: none;
+}
 
-		<!--출발지의 임시 좌표 값을 할당할 hidden divs-->
-		<div class="str" style='opacity: 0;'>
-			<b>출발지</b>
-			<div id="strX" style='opacity: 0;'>
-				X 좌표
-			</div>
-			<div id="strY" style='opacity: 0;'>
-				Y 좌표
-			</div>
-		</div>
-	
-		<!--도착지의 임시 좌표 값을 할당할 hidden divs-->
-		<div class="dst" style='opacity: 0;'>
-			<b>도착지</b>
-			<div id="dstX" style='opacity: 0;'>
-				X 좌표
-			</div>
-			<div id="dstY" style='opacity: 0;'>
-				Y 좌표
-			</div>
-		</div>
-		
-		
-	</nav>
-	<div id="intro">
-		<div class="title">안심 길 찾기</div>
-	</div>
+.call_btn {
+    position: absolute;
+    bottom: 160px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    z-index: 1;
+    background-color: #f5f5f5;
+}
+.call_btn span img {
+    width: 30px;
+    height: 30px;
+    padding: 9px 0;
+    border: none;
+}
 
-	<script>
+.sms_btn {
+    position: absolute;
+    bottom: 100px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    z-index: 1;
+    background-color: #f5f5f5;
+}
+.sms_btn span img {
+    width: 30px;
+    height: 30px;
+    padding: 9px 0;
+    border: none;
+}
 
-        // 마커를 담을 배열입니다
-        var markers = [];
+#map {
+    width: 100%;
+    height: 100vh;
+}
 
-        // 출발지와 도착지 객체 생성
-        var start = new kakao.maps.LatLng(35.13367784973298, 129.1049204111099);
-        var strnm = document.getElementById('strnm');
-        var strX = document.getElementById('strX');
-        var strY = document.getElementById('strY');
 
-        var end = new kakao.maps.LatLng(35.132568, 129.091948);
-        var dstnm = document.getElementById('dstnm')
-        var dstX = document.getElementById('dstX')
-        var dstY = document.getElementById('dstY')
+#sidebar {
+    height: 100%;
+    width: 0px;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    background-color: white;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 20px;
+    border: 1px solid #919191;
+  }
+  
+.subSidebar a, .subSidebar p{
+    padding: 8px 8px 8px 12px;
+    text-decoration: none;
+    font-size: 25px;
+    color: rgb(34, 204, 140);
+    display: block;
+    transition: 0.3s;
+  }
+ 
 
-		// 지도 표시
-		var mapContainer = document.getElementById("map"); // 지도를 표시할 div
-		var mapOption = {
-			center: new kakao.maps.LatLng(35.13367784973298, 129.1049204111099), // 지도의 중심좌표 - 부경대
-			level: 5, // 지도의 확대 레벨
-		};
-		var map = new kakao.maps.Map(mapContainer, mapOption);
-		var clusterer = new kakao.maps.MarkerClusterer({
-			map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
-			averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
-			minLevel: 7, // 클러스터 할 최소 지도 레벨
-		});
+  .sidebar_close_btn{
+    width: 70px;
+    height: 70px;
+    text-align: center;
+    font-size: 50px;
+    font-weight: bold;
+    color: rgb(34,204,140);
+    cursor: pointer;
+}
 
-		var current_location_marker; // 현재위치 마커
+.menu {
+    width: 70px;
+    height: 70px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: rgb(34,204,140);
+    cursor: pointer;
+}
 
-		// 주소-좌표 변환 객체를 생성합니다
-		var geocoder = new kakao.maps.services.Geocoder();
+.menu img {
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: auto;
+    width: 30px;
+    height: 30px;
+}
+.menu:hover{
+    background: rgb(34, 204, 140);
+    color: white;
+}
 
-        // 장소 검색 객체를 생성합니다
-        var ps = new kakao.maps.services.Places();  
-        
-        // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
-        var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+  .subSidebar {
+    height: 100%;
+    width: 0px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 70px;
+    background-color: white;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 30px;
+  }
 
-		// 인트로 에니메이션
-		setTimeout(function(){
-			var intro = document.getElementById("intro");
-			var intro_opacity = 1;
-			var intro_timer = setInterval(function(){
-			intro_opacity -= 0.01;
-			intro.style.opacity = intro_opacity;
-			if(intro_opacity <= 0){
-				clearInterval(intro_timer);
-				intro.style.display = "none";
-			}
-		}, 10);
-		}, 1000);
+  .contents {
+    width: 280px;
+}
 
-		// 마커 정보창 끄고 닫기 함수
-		function mouseOverListener(map, marker, infoWindow) {
-			return function () {
-				infoWindow.open(map, marker);
-			};
-		}
-		function mouseOutListener(infoWindow) {
-			return function () {
-				infoWindow.close();
-			};
-		}
 
-		
-        // 키워드로 장소를 검색합니다
-        searchPlaces();
+  #intro {
+    /*그라데이션 배경*/
+    font-family: "Jua";
+    background: #114357;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to top, #DEF6CD, #C4F1DF);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, #DEF6CD, #C4F1DF);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    /*중앙 정렬*/
+    justify-content: center;
+    align-items: center;
+    /* 절대위치 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    /*아이템들을 세로 방향으로 배치*/
+    flex-direction: column;
+    z-index: 3;
+}
+.title {
+        margin-bottom: 40px;
+        font-size: 5em;
+        color: white;
+    }
 
-        // 출발지를 버튼으로 입력받습니다.
-        function coordtostr() {
-            var startnm = document.getElementById('placenm')
-            var startX = document.getElementById('coordinateX')
-            var startY = document.getElementById('coordinateY')
-            strnm.innerText = "출발지 : " + startnm.innerText
-            strX.innerText = startX.innerText
-            strY.innerText = startY.innerText
-            console.log(startnm)
-            console.log(startX)
-            console.log(startY)
-        };
 
-        // 도착지를 버튼으로 입력받습니다.
-        function coordtodst() {
-            var endnm = document.getElementById('placenm')
-            var endX = document.getElementById('coordinateX')
-            var endY = document.getElementById('coordinateY')
-            dstnm.innerText = "도착지 : " + endnm.innerText
-            dstX.innerText = endX.innerText
-            dstY.innerText = endY.innerText
-            console.log(endnm)
-            console.log(endX)
-            console.log(endY)
-        };
-
-		var CCTV_markers = [];
-		var police_markers = [];
-		var bell_markers = [];
-		var fireStation_markers = [];
-		var lamp_markers = [];
-		var clusterer;
-		
-		var passList = []; // 선택된 마커 위치 리스트
-		var passListString = ""; // 선택된 마커들의 좌표를 담을 문자열
-		var polyline; // 경로(초기화를 위해 전역변수로 선언)
-		var time = 0; // 원래 소요시간
-		var time_pass = 0; // 경유시 소요시간
-		var time_diff = 0; // 원래 시간에서 경유시 시간의 차이
-		var distance = 0; // 원래 거리
-		var distance_pass = 0; // 경유시 거리
-		var distance_diff = 0; // 원래 거리에서 경유시 거리의 차이
-
-		//마커 선택 버튼 눌렀을 때 함수
-		function selectMarkers(){
-			//사이드바를 내리고
-			closeSidebar();
-			//모든 마커 보이기
-			getCCTV();
-			getEmergencyBell();
-			getPolice();
-			getfireStation();
-			getLamp();
-		}
-
-		//선택 마커 이미지
-		var waypoint_imgSrc = [];
-		var waypoint_markerImage = [];
-		var waypoint_marker = [];
-
-		for(var i=1; i<=5; i++){
-			waypoint_imgSrc[i] = 'assets/'+i+'.png';
-				imgSize = new kakao.maps.Size(45, 50), 
-				imgOption = {offset: new kakao.maps.Point(20, 40)};
-			waypoint_markerImage[i] = new kakao.maps.MarkerImage(waypoint_imgSrc[i], imgSize, imgOption);
-		}
-		
-		function mouseClickListener(check, i, markerPosition, marker){
-			return function(){
-				setWaypoint(check, i, markerPosition, marker);
-            };
-		}
-
-		function setWaypoint(check, i, markerPosition, marker) {
-                    //이미 클릭된 마커면 선택 취소
-                    if(check[i]) {
-                        console.log("마커 선택 취소");
-                        check[i] = false;
-						// passList 에서 markerPosition 과 같은 값을 찾아서 삭제
-						for(var j = 0; j < passList.length; j++) {
-							if(passList[j] == markerPosition) {
-								passList.splice(j, 1);
-								break;
-							}
-						}
-						
-						// 선택된 마커와 좌표가 같은 경유지 표시 마커가 있다면 삭제
-						// (경유지 마커가 아닌 시설물 마커를 눌러 경유지를 지우는 경우에 해당)
-						for(var j = 0; j < waypoint_marker.length; j++) {
-							// 소수점 7자리 이후로 시설물과 경유지 마커의 경도 좌표가 미세하게 다른 문제 발생
-							// waypoint_marker의 경도 좌표에서 소수점 7자리까지만 사용하여 비교
-							if(waypoint_marker[j].getPosition().getLat() == markerPosition.getLat() 
-								&& waypoint_marker[j].getPosition().getLng().toFixed(7) == markerPosition.getLng()) {
-								deleteWaypointMarker(waypoint_marker[j]);
-								break;
-							}
-						}
-
-						setWaypointToString();
-						pedestrian_route(start, end, map);
-                        return ;
-                    }
-
-                    if(passList.length == 5){
-                        console.log("5개 이상 선택됨");
-                        return ;
-                    }
-                    else {
-						console.log("마커 선택됨");
-                        check[i] = true;
-						passList.push(markerPosition);
-						insertWayPointMarker(check, i, markerPosition ,marker);
-						setWaypointToString();
-						pedestrian_route(start, end, map);
-                    }
-                }
-		
-
-		function insertWayPointMarker(check, i, markerPosition ,original_marker){
-			var marker = new kakao.maps.Marker({
-				position: markerPosition,
-				map: map,
-				image: waypoint_markerImage[passList.length],
-				clickable: true
-			});
-			waypoint_marker.push(marker);
-			// 경유지 마커 클릭시 삭제
-			kakao.maps.event.addListener(marker, 'click', function() {
-				deleteWaypointMarker(marker);
-				setWaypoint(check, i, markerPosition, original_marker);
-			});
-		}
-
-		function deleteWaypointMarker(marker){
-			marker.setMap(null);
-			var i = waypoint_marker.indexOf(marker);
-			waypoint_marker.splice(i, 1);
-			//해당 marker 뒤 경로 마커들 이미지 당기기
-			for(var j = i; j < waypoint_marker.length; j++){
-				waypoint_marker[j].setImage(waypoint_markerImage[++i]);
-			}
-		}
-
-		function setWaypointToString(){
-			// passList의 경도, 위도는 "," 각 좌표끼리는 _로 구분하여 string으로 변환
-			passListString = "";
-			for (var i = 0; i < passList.length; i++) {
-				passListString += passList[i].La + "," + passList[i].Ma + "_";
-			}
-			passListString = passListString.substring(0, passListString.length - 1);
-		}
-
-		// 길찾기 시작
-		function letpede() {
-            start = new kakao.maps.LatLng(strY.innerText, strX.innerText)
-            end = new kakao.maps.LatLng(dstY.innerText, dstX.innerText);
-            map = map;
-            console.log(start)
-            console.log(end)
-            pedestrian_route(start, end, map);
-        };
-
-	</script>
-</body>
-
-</html>
+/*길찾기 Style*/
+.map_wrap, .map_wrap * {
+    margin:0;
+    padding:0;
+    font-family:'Malgun Gothic',dotum,'돋움',sans-serif;
+    font-size:12px;
+}
+.map_wrap a, .map_wrap a:hover, .map_wrap a:active{
+    color:#000;
+    text-decoration: none;
+}
+.map_wrap {
+    position:relative;
+    width:100%;
+    height:500px;
+}
+#menu_wrap {
+    position:relative;
+    width:280px;
+    overflow-y:auto;
+    background:rgba(43, 203, 140, 0.1);
+    z-index: 1;
+    font-size:12px;
+    border-radius: 10px;
+}
+.bg_white {
+    background:#fff;
+}
+#menu_wrap hr {
+    display: block;
+    height: 1px;
+    border: 0; 
+    border-top: 2px solid #5F5F5F;
+    margin:3px 0;
+}
+#menu_wrap .option{
+    text-align: center;
+}
+#menu_wrap .option p {
+    margin:10px 0;
+}  
+#menu_wrap .option button {
+    margin-left:5px;
+}
+#placesList li {
+    list-style: none;
+}
+#placesList .item {
+    position:relative;
+    border-bottom:1px solid #888;
+    overflow: hidden;
+    cursor: pointer;
+    min-height: 65px;
+}
+#placesList .item span {
+    display: block;
+    margin-top:4px;
+}
+#placesList .item h5, #placesList .item .info {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+#placesList .item .info {
+    padding:10px 0 10px 10px;
+}
+#placesList .info .gray {
+    color:#8a8a8a;
+}
+#placesList .info .jibun {
+    padding-left:26px;
+    background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;
+}
+#placesList .info .tel {
+    color:#009900;
+}
+#placesList .item .markerbg {
+    float:left;
+    position:absolute;
+    width:36px;
+    height:37px;
+    margin:10px 0 0 10px;
+    background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;
+}
+#placesList .item .marker_1 {
+    background-position: 0 -10px;
+}
+#placesList .item .marker_2 {
+    background-position: 0 -56px;
+}
+#placesList .item .marker_3 {
+    background-position: 0 -102px
+}
+#placesList .item .marker_4 {
+    background-position: 0 -148px;
+}
+#placesList .item .marker_5 {
+    background-position: 0 -194px;
+}
+#placesList .item .marker_6 {
+    background-position: 0 -240px;
+}
+#placesList .item .marker_7 {
+    background-position: 0 -286px;
+}
+#placesList .item .marker_8 {
+    background-position: 0 -332px;
+}
+#placesList .item .marker_9 {
+    background-position: 0 -378px;
+}
+#placesList .item .marker_10 {
+    background-position: 0 -423px;
+}
+#placesList .item .marker_11 {
+    background-position: 0 -470px;
+}
+#placesList .item .marker_12 {
+    background-position: 0 -516px;
+}
+#placesList .item .marker_13 {
+    background-position: 0 -562px;
+}
+#placesList .item .marker_14 {
+    background-position: 0 -608px;
+}
+#placesList .item .marker_15 {
+    background-position: 0 -654px;
+}
+#pagination {
+    margin:10px auto;
+    text-align: center;
+}
+#pagination a {
+    display:inline-block;
+    margin-right:10px;
+}
+#pagination .on {
+    font-weight: bold;
+    cursor: default;
+    color:#777;
+}
+.searchbutton {
+    background-color: rgb(34, 204, 140);
+    color: white;
+    font-weight: bold;
+    width: 80px;
+    height: 25px;
+    margin-top: 5px;
+}
