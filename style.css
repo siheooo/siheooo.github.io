@@ -331,7 +331,7 @@ body {
     white-space: nowrap;
 }
 #placesList .item .info {
-    padding:10px 0 10px 55px;
+    padding:10px 0 10px 10px;
 }
 #placesList .info .gray {
     color:#8a8a8a;
@@ -409,28 +409,6 @@ body {
     cursor: default;
     color:#777;
 }
-.str {
-    position: absolute;
-    top: 20px;
-    right: 10px;
-    width: 150px;
-    height: 80px;
-    background-color: rgba(255, 255, 255, 0.7);
-    z-index: 1;
-    font-size: 12px;
-}
-
-.dst {
-    position: absolute;
-    top: 110px;
-    right: 10px;
-    width: 150px;
-    height: 80px;
-    background-color: rgba(255, 255, 255, 0.7);
-    z-index: 1;
-    font-size: 12px;
-}
-
 .searchbutton {
     background-color: rgb(34, 204, 140);
     color: white;
