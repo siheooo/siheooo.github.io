@@ -1,419 +1,181 @@
-body {
-    margin: 0;
-    padding: 0;
-}
-.radius_border {
-    border: 1px solid #919191;
-    border-radius: 5px;
-}
+<!DOCTYPE html>
 
-.custom_control span {
-    display: block;
-    text-align: center;
-    cursor: pointer;
-}
-
-.gps_btn {
-    position: absolute;
-    top: 70px;
-    right: 30px;
-    width: 36px;
-    overflow: hidden;
-    z-index: 1;
-    background-color: #f5f5f5;
-}
-
-.gps_btn span img {
-    width: 20px;
-    height: 20px;
-    padding: 7px 0 4px 0;
-    border: none;
-}
-
-.sidebar_open_btn {
-    position: absolute;
-    top: 50px;
-    left: 30px;
-    width: 60px;
-    height: 50px;
-    padding-top: 5px;
-    overflow: hidden;
-    z-index: 1;
-    background-color: #f5f5f5;
-    cursor: pointer;
-    font-size: 30px;
-    color:rgb(34, 204, 140);
-    font-family: 'Times New Roman', Times, serif;
-}
-.sidebar_open_btn:hover {
-    background:rgb(34, 204, 140);
-    color: white;
-    transition: 0.3s;
-}
-
-.sidebar_open_btn span img {
-    margin-top: 2px;
-    width: 50px;
-    height: 40px;
-}
-
-/*마커 선택 사이드바*/
-#subSidebar_2{
-    display: flex;
-    justify-content: center;
-    font-size: 30px;
-    color:rgb(34, 204, 140);
-}
-/*마커 선택 확인 버튼*/
-#checkbtn {
-    background-color: rgb(34, 204, 140);
-
-    color:#fff;
- 
-    text-align: center;
-    border: none;
-    cursor: pointer;
-}
-
-.zoom_btn span {
-    width: 36px;
-    height: 40px;
-    text-align: center;
-    cursor: pointer;
-}
-
-.zoom_btn {
-    position: absolute;
-    top: 120px;
-    right: 30px;
-    width: 36px;
-    height: 80px;
-    overflow: hidden;
-    z-index: 1;
-    background-color: #f5f5f5;
-}
-
-.zoom_btn span img {
-    width: 15px;
-    height: 15px;
-    padding: 12px 0;
-    border: none;
-}
-
-.zoom_btn span:first-child {
-    border-bottom: 1px solid #bfbfbf;
-}
-
-.siren_btn {
-    position: absolute;
-    bottom: 220px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    overflow: hidden;
-    z-index: 1;
-    background-color: #f5f5f5;
-}
-
-.siren_btn span img {
-    width: 30px;
-    height: 30px;
-    padding: 8px 0;
-    border: none;
-}
-
-.call_btn {
-    position: absolute;
-    bottom: 160px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    overflow: hidden;
-    z-index: 1;
-    background-color: #f5f5f5;
-}
-.call_btn span img {
-    width: 30px;
-    height: 30px;
-    padding: 9px 0;
-    border: none;
-}
-
-.sms_btn {
-    position: absolute;
-    bottom: 100px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    overflow: hidden;
-    z-index: 1;
-    background-color: #f5f5f5;
-}
-.sms_btn span img {
-    width: 30px;
-    height: 30px;
-    padding: 9px 0;
-    border: none;
-}
-
-#map {
-    width: 100%;
-    height: 100vh;
-}
+<html>
 
 
-#sidebar {
-    height: 100%;
-    width: 0px;
-    position: fixed;
-    z-index: 2;
-    top: 0;
-    left: 0;
-    background-color: white;
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 20px;
-    border: 1px solid #919191;
-  }
-  
-.subSidebar a, .subSidebar p{
-    padding: 8px 8px 8px 12px;
-    text-decoration: none;
-    font-size: 25px;
-    color: rgb(34, 204, 140);
-    display: block;
-    transition: 0.3s;
-  }
- 
 
-  .sidebar_close_btn{
-    width: 70px;
-    height: 70px;
-    text-align: center;
-    font-size: 50px;
-    font-weight: bold;
-    color: rgb(34,204,140);
-    cursor: pointer;
-}
-
-.menu {
-    width: 70px;
-    height: 70px;
-    text-align: center;
-    font-size: 12px;
-    font-weight: bold;
-    color: rgb(34,204,140);
-    cursor: pointer;
-}
-
-.menu img {
-    display: block;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin: auto;
-    width: 30px;
-    height: 30px;
-}
-.menu:hover{
-    background: rgb(34, 204, 140);
-    color: white;
-}
-
-  .subSidebar {
-    height: 100%;
-    width: 0px;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 70px;
-    background-color: white;
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 30px;
-  }
-
-  .contents {
-    width: 280px;
-}
+<head>
+    <title>TEST</title>
+    <script src = './pathsearch.js'></script>
+    <script src = './pedestrian_route.js'></script>
+    <link rel ="stylesheet" href ='./style.css' type='text/css'>
+    <script
+        src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx7b7144d6b822440c89d5008ebeb3fd17"></script>
+	<script
+		src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=66583dec16d8abc21e4a6f52204c826a&libraries=clusterer,services"></script>
+</head>
 
 
-  #intro {
-    /*그라데이션 배경*/
-    font-family: "Jua";
-    background: #114357;
-    /* fallback for old browsers */
-    background: -webkit-linear-gradient(to top, #DEF6CD, #C4F1DF);
-    /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to top, #DEF6CD, #C4F1DF);
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    width: 100%;
-    height: 100%;
-    display: flex;
-    /*중앙 정렬*/
-    justify-content: center;
-    align-items: center;
-    /* 절대위치 */
-    position: absolute;
-    top: 0;
-    left: 0;
-    /*아이템들을 세로 방향으로 배치*/
-    flex-direction: column;
-    z-index: 3;
-}
-.title {
-        margin-bottom: 40px;
-        font-size: 5em;
-        color: white;
-    }
+
+<body>
+    <div class="map_wrap">
+        <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+    
+        <div id="menu_wrap" class="bg_white">
+            <div class="option">
+                <div>
+                    <!--키워드를 받아올 form-->
+                    <form onsubmit="searchPlaces(); return false;">
+                        키워드 : <input type="text" value="부경대학교" id="keyword" size="15"> 
+                        <!--키워드 검색을 실행할 submit button-->
+                        <button type="submit" class="searchbutton">검색하기</button> 
+                    </form>
+                    <!--길찾기를 실행할 button-->
+                    <button type='button' class="searchbutton" onclick='letpede(); return false;'>길찾기</button>
+                </div>
+
+                <!--받아온 좌표 값을 임시로 저장 해 둘 hidden divs-->
+                <div id="coordinate" style='height: 0px; opacity: 0;'>
+                    좌표 값
+                </div>
+                <div id="coordinateX" style='height: 0px; opacity: 0;'>
+                    X좌표 값
+                </div>
+                <div id="coordinateY" style='height: 0px; opacity: 0;'>
+                    Y좌표 값
+                </div>
+
+            </div>
+
+            <hr>
+
+            <!--검색으로 받아온 Eliment 리스트-->
+            <ul id="placesList"></ul>
+
+            <!--페이지 구분-->
+            <div id="pagination"></div>
+
+        </div>
+    </div>
+    
+    <!--출발지의 임시 좌표 값을 할당할 hidden divs-->
+    <div class="str" style='opacity: 0;'>
+        <b>출발지</b>
+        <div id="str" style='opacity: 0;'>
+            좌표
+        </div>
+        <div id="strX" style='opacity: 0;'>
+            X 좌표
+        </div>
+        <div id="strY" style='opacity: 0;'>
+            Y 좌표
+        </div>
+    </div>
+
+    <!--도착지의 임시 좌표 값을 할당할 hidden divs-->
+    <div class="dst" style='opacity: 0;'>
+        <b>도착지</b>
+        <div id="dst" style='opacity: 0;'>
+            좌표
+        </div>
+        <div id="dstX" style='opacity: 0;'>
+            X 좌표
+        </div>
+        <div id="dstY" style='opacity: 0;'>
+            Y 좌표
+        </div>
+    </div>
 
 
-/*길찾기 Style*/
-.map_wrap, .map_wrap * {
-    margin:0;
-    padding:0;
-    font-family:'Malgun Gothic',dotum,'돋움',sans-serif;
-    font-size:12px;
-}
-.map_wrap a, .map_wrap a:hover, .map_wrap a:active{
-    color:#000;
-    text-decoration: none;
-}
-.map_wrap {
-    position:relative;
-    width:100%;
-    height:500px;
-}
-#menu_wrap {
-    position:relative;
-    width:280px;
-    overflow-y:auto;
-    background:rgba(43, 203, 140, 0.1);
-    z-index: 1;
-    font-size:12px;
-    border-radius: 10px;
-}
-.bg_white {
-    background:#fff;
-}
-#menu_wrap hr {
-    display: block;
-    height: 1px;
-    border: 0; 
-    border-top: 2px solid #5F5F5F;
-    margin:3px 0;
-}
-#menu_wrap .option{
-    text-align: center;
-}
-#menu_wrap .option p {
-    margin:10px 0;
-}  
-#menu_wrap .option button {
-    margin-left:5px;
-}
-#placesList li {
-    list-style: none;
-}
-#placesList .item {
-    position:relative;
-    border-bottom:1px solid #888;
-    overflow: hidden;
-    cursor: pointer;
-    min-height: 65px;
-}
-#placesList .item span {
-    display: block;
-    margin-top:4px;
-}
-#placesList .item h5, #placesList .item .info {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-#placesList .item .info {
-    padding:10px 0 10px 10px;
-}
-#placesList .info .gray {
-    color:#8a8a8a;
-}
-#placesList .info .jibun {
-    padding-left:26px;
-    background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;
-}
-#placesList .info .tel {
-    color:#009900;
-}
-#placesList .item .markerbg {
-    float:left;
-    position:absolute;
-    width:36px;
-    height:37px;
-    margin:10px 0 0 10px;
-    background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;
-}
-#placesList .item .marker_1 {
-    background-position: 0 -10px;
-}
-#placesList .item .marker_2 {
-    background-position: 0 -56px;
-}
-#placesList .item .marker_3 {
-    background-position: 0 -102px
-}
-#placesList .item .marker_4 {
-    background-position: 0 -148px;
-}
-#placesList .item .marker_5 {
-    background-position: 0 -194px;
-}
-#placesList .item .marker_6 {
-    background-position: 0 -240px;
-}
-#placesList .item .marker_7 {
-    background-position: 0 -286px;
-}
-#placesList .item .marker_8 {
-    background-position: 0 -332px;
-}
-#placesList .item .marker_9 {
-    background-position: 0 -378px;
-}
-#placesList .item .marker_10 {
-    background-position: 0 -423px;
-}
-#placesList .item .marker_11 {
-    background-position: 0 -470px;
-}
-#placesList .item .marker_12 {
-    background-position: 0 -516px;
-}
-#placesList .item .marker_13 {
-    background-position: 0 -562px;
-}
-#placesList .item .marker_14 {
-    background-position: 0 -608px;
-}
-#placesList .item .marker_15 {
-    background-position: 0 -654px;
-}
-#pagination {
-    margin:10px auto;
-    text-align: center;
-}
-#pagination a {
-    display:inline-block;
-    margin-right:10px;
-}
-#pagination .on {
-    font-weight: bold;
-    cursor: default;
-    color:#777;
-}
-.searchbutton {
-    background-color: rgb(34, 204, 140);
-    color: white;
-    font-weight: bold;
-    width: 80px;
-    height: 25px;
-    margin-top: 5px;
-}
+    <div>
+        <p>-</p>
+        <p id="default_route" style="font-size: 15px;">기존 경로 시간, 거리 안내</p>
+        <p id="optional_route"style="font-size: 15px;">추가 경로 시간, 거리 안내</p>
+    </div>
+
+    <script>
+        // 마커를 담을 배열입니다
+        var markers = [];
+
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+            mapOption = {
+                center: new kakao.maps.LatLng(35.13367784973298, 129.1049204111099), // 지도의 중심좌표
+                level: 5 // 지도의 확대 레벨
+            };  
+
+        // 지도를 생성합니다    
+        var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+        // 출발지와 도착지 객체 생성
+        var start = new kakao.maps.LatLng(35.13367784973298, 129.1049204111099);
+        var str = document.getElementById('str');
+        var strX = document.getElementById('strX');
+        var strY = document.getElementById('strY');
+
+        var end = new kakao.maps.LatLng(35.132568, 129.091948);
+        var dst = document.getElementById('dst')
+        var dstX = document.getElementById('dstX')
+        var dstY = document.getElementById('dstY')
+
+        // 장소 검색 객체를 생성합니다
+        var ps = new kakao.maps.services.Places();  
+        
+        // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+        var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+
+        // 키워드로 장소를 검색합니다
+        searchPlaces();
+
+
+        // 출발지를 버튼으로 입력받습니다.
+        function coordtostr() {
+            start = document.getElementById('coordinate')
+            var startX = document.getElementById('coordinateX')
+            var startY = document.getElementById('coordinateY')
+            str.innerText = start.innerText
+            strX.innerText = startX.innerText
+            strY.innerText = startY.innerText
+            console.log(start)
+            console.log(startX)
+            console.log(startY)
+        };
+
+        // 도착지를 버튼으로 입력받습니다.
+        function coordtodst() {
+            end = document.getElementById('coordinate')
+            var endX = document.getElementById('coordinateX')
+            var endY = document.getElementById('coordinateY')
+            dst.innerText = end.innerText
+            dstX.innerText = endX.innerText
+            dstY.innerText = endY.innerText
+            console.log(end)
+            console.log(endX)
+            console.log(endY)
+        };
+
+        // 길 찾기
+        var passList = []; // 선택된 마커 위치 리스트
+		var passListString = ""; // 선택된 마커들의 좌표를 담을 문자열
+		var polyline; // 경로(초기화를 위해 전역변수로 선언)
+		var time = 0; // 원래 소요시간
+		var time_pass = 0; // 경유시 소요시간
+		var time_diff = 0; // 원래 시간에서 경유시 시간의 차이
+		var distance = 0; // 원래 거리
+		var distance_pass = 0; // 경유시 거리
+		var distance_diff = 0; // 원래 거리에서 경유시 거리의 차이
+
+
+        function letpede() {
+            start = new kakao.maps.LatLng(strY.innerText, strX.innerText)
+            end = new kakao.maps.LatLng(dstY.innerText, dstX.innerText);
+            map = map;
+            console.log(start)
+            console.log(end)
+            pedestrian_route(start, end, map);
+        };
+    </script>
+</body>
+
+
+
+</html>
