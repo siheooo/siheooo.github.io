@@ -121,10 +121,10 @@
 
 					<br>
 
-					<div id="strinform" style="color: rgb(43, 203, 140);">
+					<div id="strnm" style="color: rgb(43, 203, 140);">
 						출발지 : 
 					</div>
-					<div id="dstinform" style="color: rgb(43, 203, 140);">
+					<div id="dstnm" style="color: rgb(43, 203, 140);">
 						도착지 : 
 					</div>
 
@@ -209,9 +209,6 @@
 		<!--출발지의 임시 좌표 값을 할당할 hidden divs-->
 		<div class="str" style='opacity: 0;'>
 			<b>출발지</b>
-			<div id="strnm" style='opacity: 0;'>
-				좌표
-			</div>
 			<div id="strX" style='opacity: 0;'>
 				X 좌표
 			</div>
@@ -223,9 +220,6 @@
 		<!--도착지의 임시 좌표 값을 할당할 hidden divs-->
 		<div class="dst" style='opacity: 0;'>
 			<b>도착지</b>
-			<div id="dstnm" style='opacity: 0;'>
-				좌표
-			</div>
 			<div id="dstX" style='opacity: 0;'>
 				X 좌표
 			</div>
@@ -315,7 +309,7 @@
             var startnm = document.getElementById('placenm')
             var startX = document.getElementById('coordinateX')
             var startY = document.getElementById('coordinateY')
-            strnm.innerText = startnm.innerText
+            strnm.innerText = "출발지 : " + startnm.innerText
             strX.innerText = startX.innerText
             strY.innerText = startY.innerText
             console.log(startnm)
@@ -328,10 +322,10 @@
             var endnm = document.getElementById('placenm')
             var endX = document.getElementById('coordinateX')
             var endY = document.getElementById('coordinateY')
-            dst.innerText = endnm.innerText
+            dstnm.innerText = "도착지 : " + endnm.innerText
             dstX.innerText = endX.innerText
             dstY.innerText = endY.innerText
-            console.log(end)
+            console.log(endnm)
             console.log(endX)
             console.log(endY)
         };
