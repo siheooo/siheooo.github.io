@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>안심귀가서비스</title>
+	<title>인터넷프로그래밍 3팀</title>
 	<link rel="stylesheet" href="style.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +15,7 @@
 	<script src="pathsearch.js"></script>
 	<script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx7b7144d6b822440c89d5008ebeb3fd17"></script>
 	<script
-		src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=66583dec16d8abc21e4a6f52204c826a&libraries=clusterer,services"></script>
+		src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2530315e93e47fca95bcdf52cafb039d&libraries=clusterer,services"></script>
 </head>
 
 <body>
@@ -113,7 +113,7 @@
 							<!--키워드 검색을 실행할 submit 버튼-->
 							<button type="submit" class="searchbutton">검색하기</button>
 							<!--경유지 선택 버튼-->
-							<button type="button" class="searchbutton" onclick="selectMarkers()">경유지</button>
+							<button type="button" class="searchbutton" onclick="selectMarkers(); return false;">경유지</button>
 							<!--길찾기를 실행할 버튼-->
 							<button type='button' class="searchbutton" onclick='letpede(); return false;'>길찾기</button>
 						</form>
@@ -236,6 +236,9 @@
 		
 		
 	</nav>
+	<div id="intro">
+		<div class="title">안심 길 찾기</div>
+	</div>
 
 	<script>
 
@@ -277,6 +280,19 @@
         // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
         var infowindow = new kakao.maps.InfoWindow({zIndex:1});
 
+		// 인트로 에니메이션
+		setTimeout(function(){
+			var intro = document.getElementById("intro");
+			var intro_opacity = 1;
+			var intro_timer = setInterval(function(){
+			intro_opacity -= 0.01;
+			intro.style.opacity = intro_opacity;
+			if(intro_opacity <= 0){
+				clearInterval(intro_timer);
+				intro.style.display = "none";
+			}
+		}, 10);
+		}, 1000);
 
 		// 마커 정보창 끄고 닫기 함수
 		function mouseOverListener(map, marker, infoWindow) {
