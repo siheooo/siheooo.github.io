@@ -64,7 +64,7 @@ function displayPlaces(places) {
         bounds.extend(placePosition);
 
         // 페이지에서 좌표를 표시할 Element를 가져옵니다.
-        var coordinate = document.getElementById("coordinate");
+        var placenm = document.getElementById("placenm");
         var coordinateX = document.getElementById("coordinateX");
         var coordinateY = document.getElementById("coordinateY");
 
@@ -79,7 +79,7 @@ function displayPlaces(places) {
                 var coord = marker.getPosition();
                 var coordX = coord.getLng();
                 var coordY = coord.getLat();
-                coordinate.innerText = coord;
+                placenm.innerText = title;
                 coordinateX.innerText = coordX;
                 coordinateY.innerText = coordY;
             };
