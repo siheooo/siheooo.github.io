@@ -16,18 +16,18 @@ function zoomOut() {
     map.setLevel(map.getLevel() + 1);
 }
 
+
 // 현재 위치 불러오기
 function current_location() {
     // 기존 현재위치 마커 지우기
     if (current_location_marker != null) {
-        map.removeOverlayMapObject(current_location_marker);
+        current_location_marker.setMap(null);
     }
     // 현재 위치 불러오기
     navigator.geolocation.getCurrentPosition(function (position) {
         var lat = position.coords.latitude;
         var lng = position.coords.longitude;
-        var latlng = new kakao.maps.LatLng(lat, lng);
-
+        current_latlng = new kakao.maps.LatLng(lat, lng);
         //gps 이미지
         var imgSrc = 'assets/gps.png', 
             //마커 이미지의 크기
@@ -39,13 +39,14 @@ function current_location() {
             markerPosition = new kakao.maps.LatLng(lat, lng); // 마커가 표시될 위치입니다
 
         var marker = new kakao.maps.Marker({
-            position: latlng,
+            position: current_latlng,
             image: markerImage,
         });
         marker.setMap(map);
         current_location_marker = marker;
-        map.setCenter(latlng);
+        map.setCenter(current_latlng);
     });
+    return current_latlng;
 }
 
 // 사이렌 소리 toggle
@@ -67,14 +68,21 @@ function call() {
     // buttons.js에 추가
     // 전화걸기
     function call() {
-        location.href = "tel:" + document.getElementById("callnumb").value;
+        var callnumb = document.getElementById("callnumb").value
+        console.log(callnumb)
+        if (!callnumb) {
+            location.href = "tel:" + 112;
+        }else{
+            location.href = "tel:" + callnumb;
+        }
+        console.log(callnumb)
+    };
 
-    }
     // 문자 보내기
     function sms() {
         location.href = "tel:" + document.getElementById("callnumb").value;
         location.href = 'sms:' + document.getElementById("smsnumb").value + '?body=' + document.getElementById("smscont").value
-    }
+    };
 
 // 사이드바 open
 function openSidebar() {
@@ -143,6 +151,15 @@ function checkBox(obj) {
             case "LAMP":
                 getLamp();
                 break;
+            case "CONVENIENCE":
+                getConvenience();
+                break;
+            case "24HRSHOP":
+                getShop24hr();
+                break;
+            case "ER":
+                getEmergencyRoom();
+                break;
         }
     } else {
         switch (result) {
@@ -171,6 +188,21 @@ function checkBox(obj) {
                     clusterer.removeMarker(lamp_markers[i]);
                 }
                 break;
+            case "CONVENIENCE":
+                for (var i = 0; i < convenience_markers.length; i++) {
+                    clusterer.removeMarker(convenience_markers[i]);
+                }
+                break;  
+            case "24HRSHOP":
+                for (var i = 0; i < shop24hr_markers.length; i++) {
+                    clusterer.removeMarker(shop24hr_markers[i]);
+                }
+                break; 
+            case "ER":
+                for (var i = 0; i < ER_markers.length; i++) {
+                    clusterer.removeMarker(ER_markers[i]);
+                }
+                break;       
         }
     }
 }
