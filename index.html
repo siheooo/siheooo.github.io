@@ -13,9 +13,28 @@
 	<script src="markers.js"></script>
 	<script src="buttons.js"></script>
 	<script src="pathsearch.js"></script>
-	<script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx7b7144d6b822440c89d5008ebeb3fd17"></script>
+	<script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=3ceca068ecbe0011266ba2a89b46f421"></script>
 	<script
-		src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=66583dec16d8abc21e4a6f52204c826a&libraries=clusterer,services"></script>
+		src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2530315e93e47fca95bcdf52cafb039d&libraries=clusterer,services"></script>
+		<script>//쿠키설정
+		function GetCookie (name) {
+    		var pairs = document.cookie.split(";"); // 쿠키문자열을 ;을 경계로 분할
+    		for(var i=0; i<pairs.length; i++) {
+        		var pair = pairs[i].trim(); // 쿠키 앞뒤의 빈칸 제거
+        		var unit = pair.split("=");
+        		if(unit[0] == name)
+            		return unescape(unit[1]);
+    		}
+    		return null;
+		}
+		function SetCookie (name, value, expireDate, path) {
+		var cookieStr = name + "=" + escape(value) +
+        ((expireDate == null)?"":("; expires=" + expireDate.toGMTString()))+(path=("/"));
+        document.cookie = cookieStr;
+      
+		}
+
+</script>
 </head>
 
 <body>
@@ -79,14 +98,14 @@
 				<div class="menu" onclick="openSubSidebar(3)"
 					onmouseover="this.children[0].src='assets/bookmark_white.png'"
 					onmouseout="this.children[0].src='assets/bookmark_green.png'">
-					<img src="assets/bookmark_green.png" alt="이전 기록">
-					이전 기록
+					<img src="assets/bookmark_green.png" alt="즐겨찾기">
+					즐겨찾기
 				</div>
 				<div class="menu" onclick="openSubSidebar(4)"
-					onmouseover="this.children[0].src='assets/more_white.png'"
-					onmouseout="this.children[0].src='assets/more_green.png'">
-					<img src="assets/more_green.png" alt="더보기">
-					더보기
+					onmouseover="this.children[0].src='assets/call_white.png'"
+					onmouseout="this.children[0].src='assets/call_green.png'">
+					<img src="assets/call_green.png" alt="전화및문자">
+					전화및문자
 				</div>
 			</div>
 		</div>
@@ -96,7 +115,7 @@
 			<div class="contents" style="padding-left: 15px;">
 				
 				<div style="width: 100%; height: 30px;">
-					<a href="#" class="sidebar_close_btn" onclick="closeSidebar()" style="height:30px">&times;</a>
+					<a href="#" class="sidebar_close_btn" onclick="closeSidebar()">&times;</a>
 				</div>
 
 				<br>
@@ -106,7 +125,8 @@
 							<!--키워드를 받아올 form-->
 							<form>
 								<b style="font-size: 20px; color:rgb(43, 203, 140);">키워드</b> : 
-								<input type="text" placeholder="검색 할 키워드 ex.부경대학교" id="keyword" size="18"> 
+								<input type="text" value="부경대학교" id="keyword" size="18"> 
+							
 							</form>
 							<br>
 							<!--키워드 검색을 실행할 submit 버튼-->
@@ -115,12 +135,9 @@
 							<button type="button" class="searchbutton" onclick="selectMarkers(); return false;">경유지</button>
 							<!--길찾기를 실행할 버튼-->
 							<button type='button' class="searchbutton" onclick='letpede(); return false;'>길찾기</button>
-							<!--현재 위치를 출발지로 선택할 버튼-->
-							<button type='button' class="searchbutton" onclick='current_locationToPath(true); return false;' style="width:127px">내위치를 출발지로</button>
-							<!--현재 위치를 도착지로 선택할 버튼-->
-							<button type='button' class="searchbutton" onclick='current_locationToPath(false); return false;' style="width:127px">내위치를 도착지로</button>
+							
 						</div>
-	
+						
 						<br>
 	
 						<div id="strnm" style="font: size 14px; font-weight: bold; color: rgb(43, 203, 140);">
@@ -129,7 +146,7 @@
 						<div id="dstnm" style="font: size 14px; font-weight: bold; color: rgb(43, 203, 140);">
 							도착지 : 
 						</div>
-	
+							<button type='button' class="searchbutton" onclick="AddCookie();alert('장소가 저장되었습니다');return false; alert('장소가 없습니다.') ">즐겨찾기</button>
 					<br>
 	
 					<!--경로에 따른 거리 및 시간-->
@@ -151,7 +168,7 @@
 
 		<div id ="subSidebar_2" class ="subSidebar">
 			<div class="contents">
-				<a href="#" class="sidebar_close_btn" onclick="closeSidebar()" style="height:30px">&times;</a>
+				<a href="#" class="sidebar_close_btn" onclick="closeSidebar()">&times;</a>
 				<!-- 마커 표시 선택 메뉴 들어갈 부분 -->
 				<form>
 					<ul>
@@ -159,49 +176,61 @@
 						<li style="list-style:none"><input type="checkbox" onchange="checkBox(this)" name="BELL" id="BELL" value="BELL"> 비상벨</li>
 						<li style="list-style:none"><input type="checkbox" onchange="checkBox(this)" name="POLICE" id="POLICE" value="POLICE"> 경찰서</li>
 						<li style="list-style:none"><input type="checkbox" onchange="checkBox(this)" name="FIRE" id="FIRE" value="FIRE"> 소방서</li>
-						<li style="list-style:none"><input type="checkbox" onchange="checkBox(this)" name="ER" id="ER" value="ER"> 응급실</li>
 						<li style="list-style:none"><input type="checkbox" onchange="checkBox(this)" name="LAMP" id="LAMP" value="LAMP"> 가로등</li>
-						<li style="list-style:none"><input type="checkbox" onchange="checkBox(this)" name="CONVENIENCE" id="CONVENIENCE" value="CONVENIENCE"> 편의점</li>
-						<li style="list-style:none"><input type="checkbox" onchange="checkBox(this)" name="24HRSHOP" id="24HRSHOP" value="24HRSHOP"> 24시간 영업 가게</li>
-						<li style="list-style:none"><input type="button" class="searchbutton" onclick="closeSidebar()" value="확인"></li>
+						<li style="list-style:none"><input type="button" id="checkbtn" onclick="closeSidebar()" value="확인"></li>
 					</ul>
                 </form>
 			</div>
 		</div>
 		<div id ="subSidebar_3" class ="subSidebar">
-			<div class="contents" style="padding-left: 15px;">
-				<a href="#" class="sidebar_close_btn" onclick="closeSidebar()" style="height:30px">&times;</a>
+			<div class="contents">
+				<a href="#" class="sidebar_close_btn" onclick="closeSidebar()">&times;</a>
+				<div id="menu_wrap" class="bg_white">
+				<b style="font-size: 20px; color:rgb(43, 203, 140);">즐겨찾기</b><br><br>
+				<button type="submit" class="cookiebutton" onclick="ShowCookie(); return true;">즐겨찾기 보기</button>
+				<button type="submit" class="cookiebutton" onclick="delCookie(); return true;">즐겨찾기 삭제</button>
+ 				<br><br>
+ 				<b style="font-size: 20px; color:rgb(43, 203, 140);">저장된 즐겨찾기</b><br>
+			<div id="strnm" style="font: size 14px; font-weight: bold; color: rgb(43, 203, 140);">
+							출발지 : 
+						</div>
+						<div id="dstnm" style="font: size 14px; font-weight: bold; color: rgb(43, 203, 140);">
+							도착지 : 
+						</div>
+			
+		</div>	
+		<div id ="subSidebar_4" class ="subSidebar">
+			<div class="contents">
+				<a href="#" class="sidebar_close_btn" onclick="closeSidebar()">&times;</a>
+				<div id="menu_wrap" class="bg_white">
 				<!-- 비상 연락처 설정 -->
-				<form>
-					<div class="emergency_contact">
-						<b>비상전화</b>
-						<br>
-						<img src="https://cdn.discordapp.com/attachments/752108988719562776/912587994039455774/2.png" style="margin-left: 20px;">
+				<form class="pathsearch">
+					<div style="float: left; margin-bottom: 5px;">
+						비상전화<br>
+						<img src="https://cdn.discordapp.com/attachments/752108988719562776/912587994039455774/2.png">
 						<input type="tel" 
 								id="callnumb" name="callnumb" 
-								placeholder="전화번호('-'없이 입력)">
+								value="112">
 					</div>
-					<div class="emergency_contact">
-						<b>비상문자</b>
-						<br>
-						<img src="https://cdn.discordapp.com/attachments/752108988719562776/912587994039455774/2.png" style="margin-left: 20px;">
+					<div style="float: left; margin-bottom: 5px;">
+						비상문자<br>
+						<img src="https://cdn.discordapp.com/attachments/752108988719562776/912587994039455774/2.png">
 						<input type="tel"
 								id="smsnumb" name="smsnumb" 
-								placeholder="전화번호('-'없이 입력)">
+								value="010-0000-0000">
 					</div>
-					<div class="emergency_contact">
-						<b>문자내용</b>
-						<br>
+					<div style="float: left;">
+						문자내용<br>
 						<div style="float: left; margin-right: 5px;">
-							<img src="https://cdn.discordapp.com/attachments/752108988719562776/912587994039455774/2.png" style="margin-left: 20px;">
+							<img src="https://cdn.discordapp.com/attachments/752108988719562776/912587994039455774/2.png">
 						</div>
 						<div style="float: right;">
-							<textarea rows="3" cols="30" id="smscont" name="smscont">안심귀가 서비스 비상문자</textarea>
+							<textarea rows="3" cols="30" id="smscont" name="smscont">안심귀가 서비스 비상문자입니다</textarea>
 						</div>
 					</div>									
 				</form>
 			</div>
-		</div>	
+		</div>
 
 		<!--받아온 좌표 값을 임시로 저장 해 둘 hidden divs-->
 		<div id="placenm" style='height: 0px; opacity: 0;'>
@@ -243,10 +272,6 @@
 		<div class="title">안심 길 찾기</div>
 	</div>
 
-	<div id='loading'>
-		<div class='loading'><img src='./assets/loading.gif'></div>
-	</div>
-
 	<script>
 
         // 마커를 담을 배열입니다
@@ -277,7 +302,6 @@
 		});
 
 		var current_location_marker; // 현재위치 마커
-		var current_latlng; //현재위치 좌표
 
 		// 주소-좌표 변환 객체를 생성합니다
 		var geocoder = new kakao.maps.services.Geocoder();
@@ -288,7 +312,7 @@
         // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
         var infowindow = new kakao.maps.InfoWindow({zIndex:1});
 
-		// 인트로 애니메이션
+		// 인트로 에니메이션
 		setTimeout(function(){
 			var intro = document.getElementById("intro");
 			var intro_opacity = 1;
@@ -314,6 +338,9 @@
 			};
 		}
 
+		
+        // 키워드로 장소를 검색합니다
+        searchPlaces();
 
         // 출발지를 버튼으로 입력받습니다.
         function coordtostr() {
@@ -340,32 +367,58 @@
             console.log(endX)
             console.log(endY)
         };
-
-		//현재 위치를 경로의 출발지 혹은 도착지로 설정합니다.
-		function current_locationToPath(flag) {
-			//현재 위치 표시와 동시에 좌표 받아오기 
-			var latlng = current_location();
-			
-			//flag == true면 출발지로 설정
-			if(flag){
-				strnm.innerText = "출발지 : 현재 위치";
-				strX.innerText = latlng.La;
-				strY.innerText = latlng.Ma;
-			}
-			else {
-				dstnm.innerText = "도착지 : 현재 위치";
-				dstX.innerText = latlng.La;
-				dstY.innerText = latlng.Ma;
-			}
-		}
+        			
+	function AddCookie()//쿠키생성
+	{	
+		var expire = new Date ();
+		
+		SetCookie("strnm",strnm.innerText,expire);
+		expire.setTime(expire.getTime() + (365 * 24 * 3600 * 1000));
+		
+		SetCookie("strX",strX.innerText,expire);
+		expire.setTime(expire.getTime() + (365 * 24 * 3600 * 1000));
+	
+		SetCookie("strY",strY.innerText,expire);
+		expire.setTime(expire.getTime() + (365 * 24 * 3600 * 1000));
+	
+		SetCookie("dstnm",dstnm.innerText,expire);
+		expire.setTime(expire.getTime() + (365 * 24 * 3600 * 1000));
+	
+		SetCookie("dstX",dstX.innerText,expire);
+		expire.setTime(expire.getTime() + (365 * 24 * 3600 * 1000));
+	
+		SetCookie("dstY",dstY.innerText,expire);
+		expire.setTime(expire.getTime() + (365 * 24 * 3600 * 1000));
+	
+	}
+	function delCookie()//쿠키삭제
+	{
+		deleteCookie("strnm","");
+		deleteCookie("strX","");
+		deleteCookie("strY","");
+		deleteCookie("dstnm","");
+		deleteCookie("dstX","");
+		deleteCookie("dstY","");
+	}
+	function ShowCookie(){
+		var strnm.innerText = GetCookie("strnm");
+		var strX.innerText = GetCookie("strX");
+		var strY.innerText = GetCookie("strY");
+		var dstnm.innerText = GetCookie("dstnm");
+		var dstX.innerText = GetCookie("dstX");
+		var dstY.innerText = GetCookie("dstY");	
+		console.log("출발지:"+strnm);
+		console.log(strX);
+		console.log(strY);
+		console.log("도착지:"+dstnm);
+		console.log(dstX);
+		console.log(dstY);
+	}
 		var CCTV_markers = [];
 		var police_markers = [];
 		var bell_markers = [];
 		var fireStation_markers = [];
 		var lamp_markers = [];
-		var convenience_markers = [];
-		var shop24hr_markers = [];
-		var ER_markers = [];
 		var clusterer;
 		
 		var passList = []; // 선택된 마커 위치 리스트
@@ -388,8 +441,6 @@
 			getPolice();
 			getfireStation();
 			getLamp();
-			getConvenience();
-			getShop24hr();
 		}
 
 		//선택 마커 이미지
@@ -498,23 +549,6 @@
             console.log(end)
             pedestrian_route(start, end, map);
         };
-
-
-		
-		// 로딩화면을 표시 할 함수
-		function display_loading() {
-			var loading = document.getElementById('loading')
-			loading.style.display = "flex"
-		};
-		
-		// 로딩화면을 삭제 할 함수
-		function vanish_loading() {
-			var loading = document.getElementById('loading')
-			loading.style.display = "none"
-		};
-
-		setTimeout(vanish_loading, 3000);
-
 
 	</script>
 </body>
