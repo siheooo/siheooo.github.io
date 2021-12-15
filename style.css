@@ -61,7 +61,7 @@ body {
 #subSidebar_2{
     display: flex;
     justify-content: center;
-    font-size: 25px;
+    font-size: 30px;
     color:rgb(34, 204, 140);
 }
 /*마커 선택 확인 버튼*/
@@ -292,7 +292,7 @@ body {
     font-size:12px;
     border-radius: 10px;
 }
-.bg_white {
+.bg_white {;
     background:#fff;
 }
 #menu_wrap hr {
@@ -417,58 +417,12 @@ body {
     height: 25px;
     margin-top: 5px;
 }
-.searchbutton:hover {
-    background-color: rgb(40, 244, 168);
+.cookiebutton {
+    background-color: rgb(34, 204, 140);
+    color: white;
+    font-weight: bold;
+    width: 100px;
+    height: 25px;
+    margin-top: 5px;
 }
 
-
-input[type=text] {
-    color: rgb(34, 204, 140);
-    border: 2px solid rgb(34, 204, 140);
-    border-radius: 5px;
-}
-input[type=text]:hover {
-    background-color: aliceblue;
-}
-
-input[type=tel] {
-    color: rgb(34, 204, 140);
-    border: 2px solid rgb(34, 204, 140);
-    border-radius: 5px;
-}
-input[type=tel]:hover {
-    background-color: aliceblue;
-}
-
-
-textarea {
-    color: rgb(34, 204, 140);
-    border: 2px solid rgb(34, 204, 140);
-    border-radius: 5px;
-    width: 200px;
-    height: 40px;
-    resize: none;
-}
-textarea:hover {
-    background-color: aliceblue;
-}
-
-.emergency_contact {
-    color:rgb(34, 204, 140);
-    float: left;
-    margin-bottom: 5px;
-}
-
-.loading {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 0;
-    left: 0;   
-    z-index: 2;
-    background-color: rgb(106, 106, 106);
-    opacity: 0.6;
-}
